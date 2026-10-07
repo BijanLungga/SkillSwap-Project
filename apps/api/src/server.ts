@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
-import app from './app.js';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+import app from './app';
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`[SkillSwap API] Server berjalan di http://localhost:${PORT}`);
 });
-

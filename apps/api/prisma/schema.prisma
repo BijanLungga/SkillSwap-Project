@@ -23,6 +23,7 @@ model User {
   id               String        @id @default(uuid())
   name             String
   email            String        @unique
+  password         String
   bio              String?       @db.Text
   createdAt        DateTime      @default(now())
   
@@ -31,6 +32,7 @@ model User {
   receivedRequests SwapRequest[] @relation("ReceivedRequests")
   chatMessages     ChatMessage[]
 }
+
 
 model UserSkill {
   id        String    @id @default(uuid())

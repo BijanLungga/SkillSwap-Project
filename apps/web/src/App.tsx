@@ -1,23 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import Explore from './pages/Explore';
+import SwapRequests from './pages/SwapRequests';
+import Navbar from './components/Navbar';
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState<any>(() => {
+    const stored = localStorage.getItem('skillswap_user');
+    return stored ? JSON.parse(stored) : null;
+  });
+
+  const handleLoginSuccess = (user: any) => {
+    localStorage.setItem('skillswap_user', JSON.stringify(user));
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('skillswap_user');
+    setCurrentUser(null);
+  };
+
+  if (!currentUser) {
+    return (
+      <BrowserRouter>
+        <Login onLoginSuccess={handleLoginSuccess} />
+      </BrowserRouter>
+    );
+  }
+
+  const handleUpdateUser = (updatedUser: any) => {
+    const merged = { ...currentUser, ...updatedUser };
+    localStorage.setItem('skillswap_user', JSON.stringify(merged));
+    setCurrentUser(merged);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-6 text-center">
-      <div className="max-w-2xl bg-white p-8 rounded-xl shadow-md border border-gray-100">
-        <h1 className="text-3xl font-bold text-indigo-600 mb-4">SkillSwap</h1>
-        <p className="text-gray-600 text-lg mb-6">
-          Platform Pertukaran Keahlian Antar-Pengguna (Peer-to-Peer) Berdasarkan Minat dan Kebutuhan Spesifik.
-        </p>
-        <div className="flex justify-center gap-4">
-          <button className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition">
-            Eksplorasi Partner
-          </button>
-          <button className="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium transition">
-            Kelola Profil Keahlian
-          </button>
-        </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar currentUser={currentUser} onLogout={handleLogout} />
+        <main className="max-w-7xl mx-auto px-4 py-6">
+          <Routes>
+            <Route path="/" element={<Dashboard currentUser={currentUser} />} />
+            <Route path="/profile" element={<Profile currentUser={currentUser} onUpdateUser={handleUpdateUser} />} />
+            <Route path="/explore" element={<Explore currentUser={currentUser} />} />
+            <Route path="/swap-requests" element={<SwapRequests currentUser={currentUser} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
-

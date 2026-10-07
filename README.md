@@ -95,7 +95,6 @@ Aplikasi **SkillSwap** dinyatakan selesai dan sukses dikembangkan jika memenuhi 
 
 
 
-
 # SkillSwap - Platform Pertukaran Keahlian Peer-to-Peer
 
 ## 1. Tujuan, Teknologi, dan Aturan Kode
