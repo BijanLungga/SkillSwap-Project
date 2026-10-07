@@ -1,239 +1,223 @@
-# RPL-Project
-# SkillSwap - Platform Pertukaran Keahlian Antar-Pengguna (Peer-to-Peer)
+# SkillSwap — Platform Pertukaran Keahlian Peer-to-Peer
 
-**SkillSwap** adalah platform web responsif berbasis komunitas yang dirancang untuk menghubungkan individu yang ingin mempelajari keahlian baru dengan orang lain yang memiliki keahlian tersebut, melalui sistem barter atau pertukaran keterampilan secara langsung (peer-to-peer).
-
----
-
-## Tema & Gambaran Umum
-
-> **"Platform Web Responsif Berbasis Komunitas untuk Pertukaran Keahlian (Barter Skill) Antar-Pengguna Berdasarkan Minat dan Kebutuhan Spesifik"**
-
-Projek ini dikembangkan sebagai solusi bagi individu yang ingin menguasai keterampilan baru (seperti bahasa asing, pemrograman, desain, atau musik) secara fleksibel tanpa memerlukan biaya finansial, melainkan dengan menukar keahlian yang mereka kuasai. Aplikasi ini difokuskan pada fitur-fitur inti (core features) yang realistis untuk diselesaikan dalam durasi **12 pertemuan pengembangan**.
+> Platform web komunitas untuk menghubungkan individu yang ingin mempelajari keahlian baru dengan orang yang memiliki keahlian tersebut, melalui sistem barter skill secara langsung (peer-to-peer) tanpa biaya finansial.
 
 ---
 
-## Deskripsi Masalah
+## Fitur Utama
 
-* **Masalah Utama:** Banyak orang ingin mempelajari keterampilan baru (misalnya desain grafis, bahasa asing, atau editing video), namun terkendala biaya kursus yang mahal atau kesulitan menemukan mentor yang tepat dengan sistem pembelajaran dua arah yang setara.
-* **Dampak:** Potensi pengembangan diri terhambat, sementara banyak individu yang memiliki keahlian tertentu tidak memiliki wadah untuk membagikannya sekaligus mendapatkan keahlian baru sebagai timbal balik.
-
----
-
-## Profil Target Pengguna
-
-* **Pengguna Utama:** Pelajar, Mahasiswa, Pekerja Lepas (Freelancer), dan Profesional Muda (Usia 18–30 tahun).
-* **Kebutuhan:**
-* Ingin belajar keahlian baru secara praktis tanpa biaya (free/barter).
-* Membagikan keahlian yang sudah dikuasai untuk membantu orang lain sekaligus mengasah kemampuan diri.
-* Menemukan partner tukar keahlian dengan kriteria jadwal dan minat yang cocok.
-
-
-* **Karakteristik:** Aktif secara digital dan terbiasa menggunakan aplikasi antarmuka mobile-friendly dan web-responsive.
+- **Autentikasi** — Daftar & masuk menggunakan email dan password
+- **Profil & Keahlian** — Tambah/hapus keahlian yang dimiliki (`HAVE`) dan ingin dipelajari (`WANT`)
+- **Eksplorasi Partner** — Cari dan filter pengguna lain berdasarkan keahlian
+- **Swap Request** — Kirim, terima, atau tolak permintaan pertukaran keahlian
+- **Chat** — Ruang obrolan antar pengguna yang sudah terhubung (status `ACCEPTED`)
+- **Dashboard** — Ringkasan statistik dan daftar partner aktif
 
 ---
 
-## Manfaat Aplikasi
+## Tech Stack
 
-1. **Bagi Pengguna:** Memfasilitasi pertukaran ilmu dan keterampilan secara gratis melalui konsep barter kemampuan (Skill A for Skill B).
-2. **Bagi Komunitas:** Membangun ekosistem kolaboratif di mana setiap anggota dapat berperan sekaligus sebagai pelajar (learner) dan pengajar (mentor).
-
----
-
-## Fitur Inti (Scope 12 Pertemuan)
-
-| No | Fitur | Deskripsi |
-| --- | --- | --- |
-| 1 | **Autentikasi & Profil Pengguna** | Pendaftaran dan login akun sederhana (Email & Password), pengisian profil mencakup Nama, Bio, Skill I Have (Keahlian yang dimiliki), dan Skill I Want (Keahlian yang ingin dipelajari). |
-| 2 | **Eksplorasi & Pencarian Pengguna/Keahlian** | Pencarian dan penyaringan (filtering) daftar pengguna lain berdasarkan keahlian yang mereka tawarkan atau yang sedang mereka cari. |
-| 3 | **Manajemen Permintaan Pertukaran (Swap Request)** | Fitur untuk mengajukan permintaan tukar keahlian (Send Swap Request), serta menerima atau menolak permintaan dari pengguna lain. |
-| 4 | **Sistem Ruang Obrolan Sederhana (Chat Room)** | Ruang diskusi berupa pesan teks sederhana untuk koordinasi internal antar-pengguna yang telah disetujui permintaannya (matched). |
-| 5 | **Dashboard / Daftar Pertukaran Saya** | Halaman khusus yang menampilkan status koneksi/permintaan pertukaran (Pending, Disetujui, Selesai) beserta daftar riwayat partner skill swap. |
+| Layer | Teknologi |
+|---|---|
+| Frontend | React 18 + TypeScript + Vite + Tailwind CSS |
+| Backend | Node.js + TypeScript + Express |
+| Database | MySQL (via XAMPP) |
+| ORM | Prisma |
+| Shared Types | npm workspace (`packages/shared`) |
 
 ---
 
-## Fitur yang Tidak Dikerjakan (Out of Scope)
+## Prasyarat
 
-Untuk memastikan proyek selesai tepat waktu dalam **12 kali pertemuan**, fitur-fitur berikut tidak termasuk dalam cakupan pengembangan:
+Pastikan sudah terinstall di komputer kamu:
 
-1. **Panggilan Video / Live Class Bawaan:** Tidak menyediakan fitur video conference internal (proses belajar mengajar dilakukan via tautan eksternal seperti Zoom/Google Meet atau pertemuan langsung).
-2. **Sistem Rating, Ulasan, & Gamifikasi (Badges):** Belum ada penilaian sistem reputasi, bintang, ulasan antar-pengguna, atau sistem leveling.
-3. **Sistem Monetisasi / Dompet Digital:** Tidak ada transaksi pembayaran uang asli atau sistem koin/kredit berbayar (murni barter keahlian secara sukarela).
-4. **Notifikasi Push (Push Notifications):** Tidak ada pengiriman notifikasi instan ke perangkat pengguna secara real-time (pembaruan status hanya terlihat di dalam web).
-5. **Autentikasi Media Sosial / OAuth:** Login terbatas menggunakan akun lokal (Email & Password), tidak menggunakan Google/Facebook Sign-In.
+- [Node.js](https://nodejs.org/) versi 18 atau lebih baru
+- [XAMPP](https://www.apachefriends.org/) (untuk MySQL)
+- Git
 
 ---
 
-## Kriteria Aplikasi Dinyatakan Berhasil
+## Cara Menjalankan (Setup Pertama Kali)
 
-Aplikasi **SkillSwap** dinyatakan selesai dan sukses dikembangkan jika memenuhi kriteria berikut pada Pertemuan ke-12:
+### 1. Clone Repository
 
-### 1. Fungsionalitas Utama (Core Flow) Berjalan Smooth
+```bash
+git clone https://github.com/BijanLungga/SkillSwap-Project.git
+cd SkillSwap-Project
+```
 
-* [ ] Pengguna dapat mendaftar akun dan melengkapi profil keahlian yang dimiliki serta yang ingin dipelajari.
-* [ ] Pengguna dapat mencari pengguna lain berdasarkan kategori keahlian tertentu.
-* [ ] Pengguna dapat mengirim permintaan pertukaran (Swap Request), dan pengguna penerima dapat menyetujui atau menolaknya.
-* [ ] Pengguna yang telah saling terhubung (matched) dapat mengirim dan membaca pesan teks di ruang obrolan (chat).
+### 2. Install Semua Dependencies
 
-### 2. Keberhasilan Teknis
+```bash
+npm install
+```
 
-* [ ] Semua operasi CRUD (Create, Read, Update, Delete) pada data Profil Keahlian dan Permintaan Tukar berjalan tanpa galat.
-* [ ] Pengujian dasar (Black Box Testing) mencatat tidak adanya critical bug pada alur utama pendaftaran hingga pengiriman pesan.
+### 3. Buat File `.env` untuk Backend
 
-### 3. Pengujian Antarmuka (UI/UX)
+Buat file baru di `apps/api/.env`:
 
-* [ ] Antarmuka aplikasi dapat diakses secara responsif baik melalui desktop maupun perangkat mobile.
+```env
+PORT=5000
+DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
+```
 
-* [ ] Pengguna dapat mengatur profil keahlian dan mencari partner secara akurat.
-* [ ] Alur permintaan tukar (Swap Request) dari pending hingga disetujui berjalan lancar.
-* [ ] Fitur chat berfungsi dengan baik bagi pengguna yang telah terhubung.
-* [ ] Seluruh operasi CRUD stabil tanpa critical bug pada pengujian dasar.
+> **Catatan:** Jika MySQL kamu menggunakan password, ganti `root:` menjadi `root:PASSWORD_KAMU`.
 
+### 4. Nyalakan MySQL di XAMPP
 
+1. Buka **XAMPP Control Panel**
+2. Klik **Start** pada baris **MySQL**
+3. Tunggu sampai status berubah menjadi **hijau (Running)**
 
+### 5. Sync Database & Generate Prisma Client
 
+Jalankan dari folder `apps/api`:
 
+```bash
+cd apps/api
+npx prisma db push
+```
 
+Perintah ini akan:
+- Membuat database `skillswap_db` secara otomatis
+- Membuat semua tabel sesuai schema
+- Meng-generate Prisma Client
 
-# SkillSwap - Platform Pertukaran Keahlian Peer-to-Peer
+Kembali ke folder root:
 
-## 1. Tujuan, Teknologi, dan Aturan Kode
-
-**Tujuan Aplikasi:**  
-Menghubungkan individu yang ingin mempelajari keahlian baru dengan orang lain yang memiliki keahlian tersebut melalui sistem barter atau pertukaran keterampilan secara langsung (*peer-to-peer*) tanpa biaya finansial. Aplikasi memfasilitasi pengelolaan profil keahlian, pencarian partner, pengajuan permintaan tukar, dan komunikasi dasar antar-pengguna.
-
-### Tech Stack
-* **Frontend:** React + TypeScript + Vite + Tailwind CSS   
-* **Backend:** Node.js + TypeScript + Express   
-* **Database:** MySQL   
-* **ORM:** Prisma   
-* **API Style:** REST API   
-* **Real-time (Opsional):** REST API dengan *polling* atau *refresh* sederhana untuk *chat* agar lebih efisien dan mudah diselesaikan dalam 12 pertemuan.
-* **Deployment/Local Env:** Docker Compose untuk Database   
-* **Config:** `.env.example` untuk URL database dan *environment variables*
-
-### Aturan Kode
-* Jangan tambahkan komentar kecuali sangat diperlukan untuk logika yang rumit.   
-* Gunakan `PascalCase` untuk *classes*, *types*, *interfaces*, *enums*, komponen React, model database, dan API DTOs.   
-* Gunakan `camelCase` untuk variabel lokal dan properti JSON.   
-* Jaga panjang baris kode di bawah 150 karakter.   
-* Gunakan struktur folder yang bersih, sederhana, dan modular.   
-* Gunakan bahasa Indonesia untuk semua label UI, tombol, pesan, dan validasi di frontend.
+```bash
+cd ../..
+```
 
 ---
 
-## 2. Entitas Utama & Aturan Database
+## Cara Menjalankan Aplikasi (Setiap Saat)
 
-### Entitas Utama
-1. **User (Pengguna)**
-   * Id
-   * Name
-   * Email
-   * Bio
-   * CreatedAt
+> ⚠️ **Pastikan MySQL di XAMPP sudah Running sebelum memulai.**
 
-2. **UserSkill (Keahlian Pengguna)**
-   * Id
-   * UserId
-   * SkillName
-   * SkillType (`HAVE` atau `WANT`)
-   * CreatedAt
+Buka **2 terminal terpisah** di folder root project:
 
-3. **SwapRequest (Permintaan Pertukaran)**
-   * Id
-   * SenderId
-   * ReceiverId
-   * Status (`PENDING`, `ACCEPTED`, `REJECTED`, `COMPLETED`)
-   * Message
-   * CreatedAt
+### Terminal 1 — Backend API
 
-4. **ChatMessage (Pesan Obrolan)**
-   * Id
-   * SwapRequestId
-   * SenderId
-   * MessageText
-   * CreatedAt
+```bash
+cd apps/api
+npx ts-node-dev --respawn --transpile-only src/server.ts
+```
 
-### Aturan Database
-* Sebuah `SwapRequest` harus unik antara pasangan pengirim dan penerima yang aktif guna menghindari duplikasi permintaan ganda yang belum selesai.
-* Jangan pernah menghapus data riwayat *swap request* atau obrolan yang sudah tersimpan (*keep history*).
-* Gunakan migrasi Prisma (*Prisma Migrations*) dan sediakan *seed data* contoh pengguna awal beserta daftar keahlian mereka (`HAVE` & `WANT`).
+Tunggu hingga muncul:
+```
+[SkillSwap API] Server berjalan di http://localhost:5000
+```
+
+### Terminal 2 — Frontend Web
+
+```bash
+npm run dev:web
+```
+
+Tunggu hingga muncul:
+```
+  ➜  Local:   http://localhost:5173/
+```
+
+### Buka di Browser
+
+```
+http://localhost:5173
+```
 
 ---
 
-## 3. Fitur Backend
+## Cara Menghentikan Aplikasi
 
-1. **CRUD User & Profil Keahlian**
-   * Endpoint untuk pendaftaran/pembuatan profil pengguna, mengambil detail pengguna, memperbarui profil, serta menambah atau menghapus data keahlian (`Skill I Have` & `Skill I Want`).
+Tekan **`Ctrl + C`** di masing-masing terminal.
 
-2. **Eksplorasi & Pencarian Partner**
-   * Endpoint pencarian dan filter daftar pengguna lain berdasarkan keahlian yang mereka tawarkan (`Skill I Have`) atau keahlian yang sedang mereka cari (`Skill I Want`).
+Jika ada error `address already in use :::5000`, jalankan:
 
-3. **Manajemen Swap Request**
-   * Endpoint untuk mengirim permintaan tukar keahlian baru (`POST /api/swap-requests`), mengambil daftar permintaan masuk/keluar, serta memperbarui status permintaan menjadi `ACCEPTED`, `REJECTED`, atau `COMPLETED` (`PUT /api/swap-requests/:Id`).
+```bash
+# Cari PID proses di port 5000
+netstat -ano | findstr :5000
 
-4. **Sistem Chat Internal**
-   * Endpoint untuk mengirim pesan teks (`POST /api/swap-requests/:Id/messages`) dan mengambil riwayat pesan (`GET /api/swap-requests/:Id/messages`) di dalam sesi pertukaran yang statusnya sudah disetujui (`ACCEPTED`).
-
-5. **Dashboard API**
-   * Endpoint yang mengembalikan ringkasan data pengguna (total keahlian terdaftar, total permintaan aktif, dan status koneksi partner).
+# Matikan proses (ganti 12345 dengan PID yang muncul)
+taskkill /PID 12345 /F
+```
 
 ---
 
-## 4. Fitur Frontend & Halaman
+## Urutan Wajib Setiap Kali Mau Pakai SkillSwap
 
-1. **Dashboard**
-   * Ringkasan statistik (total keahlian terdaftar, total permintaan aktif, sesi pertukaran berjalan).
-   * Daftar rekomendasi partner potensial berdasarkan kecocokan keahlian (*Skill Match*).
-
-2. **Manajemen Profil & Keahlian**
-   * Formulir untuk mengubah data diri, bio, serta menambah atau menghapus daftar keahlian yang dikuasai (*Skill I Have*) dan yang ingin dipelajari (*Skill I Want*).
-
-3. **Eksplorasi Partner**
-   * Halaman pencarian dan filter pengguna lain berdasarkan kategori keahlian.
-   * Tombol: `Kirim Permintaan Tukar (Swap Request)`.
-
-4. **Manajemen Swap Request & Chat**
-   * Daftar status permintaan pertukaran (Pending, Disetujui, Ditolak, Selesai).
-   * Ruang obrolan sederhana (*chat room*) bagi pengguna yang sudah terhubung untuk koordinasi jadwal belajar.
-
-5. **Persyaratan UI:**
-   * Menggunakan **Bahasa Indonesia** untuk seluruh label, tombol, pesan, dan validasi.
-   * Menggunakan lencana status (*badge*) dengan warna: 
-     * Disetujui / Aktif: Hijau
-     * Menunggu / Pending: Kuning / Oranye
-     * Ditolak / Selesai: Merah / Abu-abu
-   * Desain responsif (*desktop* dan *mobile*), tabel sederhana, kartu (*cards*), dialog konfirmasi sebelum menghapus data, dan *empty states*.
+```
+1. Nyalakan XAMPP → Start MySQL
+2. Jalankan Backend (Terminal 1)
+3. Jalankan Frontend (Terminal 2)
+4. Buka http://localhost:5173
+```
 
 ---
 
-## 5. Rute API yang Dibutuhkan
+## Struktur Project
 
-* `GET /api/users`
-* `POST /api/users`
-* `GET /api/users/:Id`
-* `PUT /api/users/:Id`
-* `GET /api/users/:Id/skills`
-* `POST /api/users/:Id/skills`
-* `DELETE /api/skills/:Id`
-* `GET /api/explore`
-* `GET /api/swap-requests`
-* `POST /api/swap-requests`
-* `PUT /api/swap-requests/:Id`
-* `GET /api/swap-requests/:Id/messages`
-* `POST /api/swap-requests/:Id/messages`
-* `GET /api/dashboard`
+```
+SkillSwap-Project/
+├── apps/
+│   ├── api/                  # Backend Express + Prisma
+│   │   ├── prisma/
+│   │   │   └── schema.prisma
+│   │   ├── src/
+│   │   │   ├── config/       # Koneksi database
+│   │   │   ├── controllers/  # Request handler
+│   │   │   ├── routes/       # Route definitions
+│   │   │   └── services/     # Business logic
+│   │   └── .env              # Environment variables (buat sendiri)
+│   └── web/                  # Frontend React + Vite
+│       └── src/
+│           ├── components/   # Komponen reusable
+│           ├── pages/        # Halaman utama
+│           └── services/     # Axios API calls
+└── packages/
+    └── shared/               # TypeScript types bersama
+```
 
 ---
 
-## 6. Struktur Monorepo & Deliverables
+## API Endpoints
 
-### Struktur Monorepo (TypeScript + npm workspaces)
-```text
-skill-swap/
-  apps/
-    web/
-    api/
-  packages/
-    shared/
-* [ ] Antarmuka dapat diakses secara responsif baik via desktop maupun mobile.
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| `POST` | `/api/users` | Daftar akun baru |
+| `POST` | `/api/users/login` | Login |
+| `GET` | `/api/users/:id` | Detail pengguna |
+| `PUT` | `/api/users/:id` | Update profil |
+| `GET` | `/api/users/:id/skills` | Daftar keahlian |
+| `POST` | `/api/users/:id/skills` | Tambah keahlian |
+| `DELETE` | `/api/skills/:id` | Hapus keahlian |
+| `GET` | `/api/explore` | Cari partner |
+| `GET` | `/api/swap-requests` | Daftar swap request |
+| `POST` | `/api/swap-requests` | Kirim swap request |
+| `PUT` | `/api/swap-requests/:id` | Update status request |
+| `GET` | `/api/swap-requests/:id/messages` | Riwayat chat |
+| `POST` | `/api/swap-requests/:id/messages` | Kirim pesan |
+| `GET` | `/api/dashboard` | Data dashboard |
+
+---
+
+## Troubleshooting
+
+| Error | Solusi |
+|---|---|
+| `Cannot find module /app.js` | Pastikan `server.ts` mengimport `'./app'` tanpa `.js` |
+| `Environment variable not found: DATABASE_URL` | Pastikan file `apps/api/.env` sudah dibuat dan berisi `DATABASE_URL` |
+| `Can't reach database server at localhost:3306` | Nyalakan MySQL di XAMPP terlebih dahulu |
+| `address already in use :::5000` | Ada proses lain di port 5000, matikan dengan `taskkill /PID <pid> /F` |
+| `Unknown argument 'password'` | Jalankan `npx prisma db push` dari folder `apps/api` untuk sync schema |
+| Tombol tidak bisa diklik di web | Pastikan backend sudah jalan di port 5000 |
+
+---
+
+## Kontribusi
+
+1. Fork repository ini
+2. Buat branch baru: `git checkout -b fitur/nama-fitur`
+3. Commit perubahan: `git commit -m "feat: deskripsi fitur"`
+4. Push ke branch: `git push origin fitur/nama-fitur`
+5. Buat Pull Request
