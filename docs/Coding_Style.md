@@ -116,3 +116,4 @@ Seluruh endpoint REST API wajib mengembalikan response JSON seragam:
 2. Gunakan `jest.mock('../config/database')` untuk mengisolasi layer basis data sehingga pengujian berjalan cepat tanpa dependensi server eksternal aktif.
 3. Struktur penulisan test menggunakan `describe` dan `it` dengan kalimat penjelas berbahasa Indonesia yang mencerminkan *Acceptance Criteria*.
 4. Setiap commit ke branch utama wajib memastikan `npm test` lolos dengan status **ALL PASSED**.
+

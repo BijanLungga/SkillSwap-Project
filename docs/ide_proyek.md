@@ -85,3 +85,4 @@ Untuk memastikan proyek selesai tepat waktu dalam **12 kali pertemuan**, batasan
   - Antarmuka web responsif diakses melalui layar desktop maupun mobile.
   - Komponen dialog konfirmasi mencegah penghapusan keahlian secara tidak sengaja.
   - Indikator status semantik jelas (Hijau = ACCEPTED/HAVE, Kuning = PENDING, Biru = WANT, Merah = REJECTED).
+

@@ -71,3 +71,4 @@ Platform SkillSwap dirancang untuk menciptakan lingkungan belajar yang ramah, be
 ### 3.5 Panel Obrolan (`SwapRequests.tsx`)
 - Terintegrasi langsung di samping daftar permintaan swap.
 - Bubble obrolan pengirim berwarna indigo di sisi kanan, dan lawan bicara berwarna putih dengan border abu-abu di sisi kiri.
+

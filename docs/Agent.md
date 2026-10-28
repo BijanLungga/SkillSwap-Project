@@ -53,3 +53,4 @@ Dokumen ini dibaca oleh **AI coding agent apa pun** (Claude Code, Cursor, GitHub
 ## 4. Identitas Agent
 
 Setiap agent yang menyelesaikan sesi pekerjaan wajib mencantumkan identitas model AI yang digunakan pada kolom `Agent` di `docs/DevLog.md` (misalnya `Gemini 3.8 Flash`, `Claude Sonnet 4.6`, `GPT-OSS 120B`).
+

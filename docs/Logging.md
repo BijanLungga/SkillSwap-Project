@@ -54,3 +54,4 @@ docs/
 - Format wajib: `YYYY-MM-DD HH:MM WIB` (format 24 jam waktu Indonesia Barat).
 - Agent AI wajib mencatat waktu riil saat pengerjaan berlangsung.
 - Setiap entri baru selalu diletakkan di **bagian paling atas** file `docs/DevLog.md` (kronologis terbalik) tepat di bawah header pembuka.
+

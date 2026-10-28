@@ -4,6 +4,22 @@
 
 ---
 
+## [2026-10-28 14:15 WIB] — Optimalisasi tsconfig.json dan Fix Extension Import Web
+
+- **Agent:** Gemini 3.8 Flash
+- **Tipe:** Refactor & Fix Bug
+- **Status:** Selesai
+- **Modul:** TypeScript Configuration & Build Pipeline
+- **File terdampak:**
+  - `apps/api/tsconfig.json` (upgrade target ke ES2022, strict mode true, types node & jest)
+  - `apps/web/src/main.tsx` (fix import App tanpa ekstensi .tsx)
+  - `.gitignore` (ignore build artifacts dist/ dan *.tsbuildinfo secara global)
+- **Deskripsi:**
+  Memperbaiki konfigurasi `apps/api/tsconfig.json` dengan mengaktifkan compiler options modern (ES2022, lib ES2022, strict mode, types node dan jest) sehingga bebas warning linting di VS Code. Memperbaiki error TS5097 pada `apps/web/src/main.tsx` sehingga perintah `npm run build` dan `npm test` lulus 100% pada seluruh workspace.
+- **Error/Kendala:** Tidak ada.
+
+---
+
 ## [2026-10-28 13:25 WIB] — Harmonisasi Standar Dokumentasi Template RPL & Restrukturisasi Docs
 
 - **Agent:** Gemini 3.8 Flash
@@ -92,3 +108,4 @@
   - `apps/api/.env` (koneksi MySQL `mysql://root:@localhost:3306/skillswap_db`)
 - **Deskripsi:**
   Mengganti dependensi Docker Compose menjadi MySQL lokal XAMPP sesuai preferensi pengguna. Menginisialisasi monorepo npm workspaces dan membangun seluruh endpoint dasar REST API beserta antarmuka React Tailwind.
+
