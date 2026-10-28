@@ -7,7 +7,7 @@ Pastikan sudah terinstall di komputer:
 | Software | Versi Minimum | Link Download |
 |----------|--------------|---------------|
 | Node.js | v18+ | https://nodejs.org/ |
-| XAMPP | Terbaru | https://www.apachefriends.org/ |
+| Laragon / XAMPP | Terbaru | https://laragon.org/ atau https://www.apachefriends.org/ |
 | Git | Terbaru | https://git-scm.com/ |
 
 ---
@@ -36,13 +36,18 @@ PORT=5000
 DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
 ```
 
-> **Catatan:** Jika MySQL menggunakan password, ubah menjadi `mysql://root:PASSWORD@localhost:3306/skillswap_db`
+> **Catatan:** Jika MySQL menggunakan password, ubah menjadi `mysql://root:PASSWORD@localhost:3306/skillswap_db`. Untuk Laragon default password kosong (`""`).
 
-### 4. Nyalakan MySQL
+### 4. Nyalakan MySQL (Laragon atau XAMPP)
 
-1. Buka **XAMPP Control Panel**
-2. Klik **Start** pada baris **MySQL**
-3. Tunggu sampai status menjadi **hijau (Running)**
+- **Opsi Laragon (Disarankan):**
+  1. Buka aplikasi **Laragon**.
+  2. Klik tombol **"Start All"**.
+  3. Pastikan MySQL aktif pada port `3306`.
+
+- **Opsi XAMPP:**
+  1. Buka **XAMPP Control Panel**.
+  2. Klik **Start** pada modul **MySQL** hingga berwarna hijau.
 
 ### 5. Sinkronisasi Database
 
@@ -61,7 +66,7 @@ Perintah ini akan otomatis:
 
 ## Menjalankan Aplikasi
 
-> ⚠️ **Pastikan MySQL di XAMPP sudah Running sebelum memulai.**
+> ⚠️ **Pastikan MySQL di Laragon / XAMPP sudah Running sebelum memulai.**
 
 Buka **2 terminal terpisah**:
 
@@ -133,7 +138,7 @@ taskkill /PID 12345 /F
 ## Urutan Menjalankan (Setiap Saat)
 
 ```
-1. Nyalakan XAMPP → Start MySQL
+1. Nyalakan Laragon (Klik "Start All") atau XAMPP (Start MySQL)
 2. Jalankan Backend (Terminal 1)
 3. Jalankan Frontend (Terminal 2)
 4. Buka http://localhost:5173

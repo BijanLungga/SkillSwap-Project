@@ -18,7 +18,7 @@ Sebelum mulai, pastikan hal berikut sudah terpasang di komputer Anda:
 | Kebutuhan | Keterangan |
 | :--- | :--- |
 | **Node.js** | Versi 18 atau lebih baru (`node -v`). Download di [nodejs.org](https://nodejs.org/). |
-| **XAMPP** | Untuk menjalankan server basis data MySQL lokal (port 3306). Download di [apachefriends.org](https://www.apachefriends.org/). |
+| **Database** | **Laragon** (Disarankan) atau **XAMPP** untuk server MySQL lokal (port 3306). |
 | **Git** | Untuk clone dan manajemen versi kode (`git --version`). |
 | **Port bebas** | Port `5000` (API) dan `5173` (Frontend Web) tidak sedang dipakai aplikasi lain. |
 
@@ -44,13 +44,17 @@ PORT=5000
 DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
 ```
 
-> **Catatan:** Jika akun MySQL XAMPP Anda menggunakan password, sesuaikan nilai `DATABASE_URL` menjadi `mysql://root:PASSWORD_ANDA@localhost:3306/skillswap_db`.
+> **Catatan:** Jika akun MySQL Anda menggunakan password, sesuaikan nilai `DATABASE_URL` menjadi `mysql://root:PASSWORD_ANDA@localhost:3306/skillswap_db`. Untuk Laragon default password kosong (`""`).
 
-### 3. Nyalakan Layanan MySQL di XAMPP
+### 3. Nyalakan Layanan MySQL di Laragon / XAMPP
 
-1. Buka aplikasi **XAMPP Control Panel**.
-2. Klik tombol **Start** pada baris modul **MySQL**.
-3. Pastikan status modul berubah menjadi **hijau (Running)** pada port `3306`.
+- **Menggunakan Laragon (Disarankan):**
+  1. Buka aplikasi **Laragon**.
+  2. Klik tombol **"Start All"**.
+  3. Pastikan MySQL berstatus aktif (port `3306`).
+- **Menggunakan XAMPP:**
+  1. Buka **XAMPP Control Panel**.
+  2. Klik tombol **Start** pada baris modul **MySQL** (port `3306`).
 
 ### 4. Sinkronisasi Skema Database & Generate Prisma Client
 
