@@ -1,144 +1,288 @@
-# SkillSwap — Platform Pertukaran Keahlian Peer-to-Peer
+# SkillSwap — Platform Pertukaran Keahlian Antar-Pengguna (Peer-to-Peer)
 
-> **Platform Web Responsif Berbasis Komunitas untuk Pertukaran Keahlian (Barter Skill) Antar-Pengguna Berdasarkan Minat dan Kebutuhan Spesifik**
+**SkillSwap** adalah aplikasi web responsif berbasis komunitas yang dirancang untuk memfasilitasi pertukaran keterampilan secara langsung (*peer-to-peer barter skill*) antar-pengguna berdasarkan minat dan kebutuhan belajar spesifik, tanpa melibatkan transaksi finansial.
 
-Aplikasi ini dikembangkan untuk memfasilitasi individu yang ingin mempelajari keterampilan baru (misalnya pemrograman, desain grafis, bahasa asing, atau musik) secara gratis melalui barter keahlian langsung (*peer-to-peer*) tanpa melibatkan transaksi uang.
+## Tech Stack
 
----
-
-## 📑 Dokumen Proyek & Panduan
-- 📖 [Panduan Menjalankan Lengkap (HowToRun.md)](./HowToRun.md)
-- ✅ [Checklist Evaluasi MVP Pertemuan 5, 6, & 7 (checklist_mvp.md)](./checklist_mvp.md)
-
----
-
-## 🚀 Fitur Utama (MVP Scope)
-
-1. **Autentikasi Pengguna**: Registrasi akun baru dan login dengan email & password.
-2. **Manajemen Profil & Keahlian**: Kelola nama, bio, serta keahlian yang dimiliki (`HAVE`) dan yang ingin dipelajari (`WANT`).
-3. **Eksplorasi Partner**: Cari dan filter pengguna lain berdasarkan nama atau keahlian yang ditawarkan/dicari.
-4. **Manajemen Swap Request**: Kirim permintaan barter skill, terima (`ACCEPTED`), atau tolak (`REJECTED`) permintaan masuk.
-5. **Ruang Obrolan (Chat Room)**: Fasilitas koordinasi teks antar-partner yang telah disetujui permintaannya.
-6. **Dashboard Interaktif**: Statistik real-time (jumlah skill, permintaan pending, swap aktif) serta daftar partner terhubung.
+- **Backend:** Node.js, Express, TypeScript, Prisma ORM, MySQL (XAMPP)
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Lucide React Icons
+- **Testing:** Jest, ts-jest (Preset Node/TypeScript)
+- **Arsitektur:** Decoupled Monorepo (npm workspaces: `apps/api`, `apps/web`, `packages/shared`), RESTful API
 
 ---
 
-## 🛠️ Tech Stack
+## Prerequisites
 
-| Komponen | Teknologi |
-|---|---|
-| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons |
-| **Backend** | Node.js, Express, TypeScript, Prisma ORM |
-| **Database** | MySQL (via XAMPP) |
-| **Testing** | Jest, ts-jest (Unit Testing All Passed) |
-| **Architecture** | Monorepo dengan npm workspaces (`apps/web`, `apps/api`, `packages/shared`) |
+Sebelum mulai, pastikan hal berikut sudah terpasang di komputer Anda:
+
+| Kebutuhan | Keterangan |
+| :--- | :--- |
+| **Node.js** | Versi 18 atau lebih baru (`node -v`). Download di [nodejs.org](https://nodejs.org/). |
+| **XAMPP** | Untuk menjalankan server basis data MySQL lokal (port 3306). Download di [apachefriends.org](https://www.apachefriends.org/). |
+| **Git** | Untuk clone dan manajemen versi kode (`git --version`). |
+| **Port bebas** | Port `5000` (API) dan `5173` (Frontend Web) tidak sedang dipakai aplikasi lain. |
+
+> **Catatan untuk pengguna Windows:** Seluruh perintah di panduan ini dijalankan di **PowerShell** atau terminal bawaan VS Code / IDE.
 
 ---
 
-## ⚡ Cara Cepat Menjalankan Aplikasi
+## Quick Start — Panduan Menjalankan Aplikasi
 
-### 1. Prasyarat
-- **Node.js** v18+ sudah terpasang
-- **XAMPP** sudah terpasang (nyalakan **MySQL** di XAMPP hingga status hijau)
+### 1. Masuk ke Folder Project & Install Dependencies
 
-### 2. Setup Database & Dependencies
 ```bash
-# 1. Install dependencies
+cd "d:\Semester 3\RPL"
 npm install
+```
 
-# 2. Setup file .env pada apps/api/.env
-# Pastikan isinya:
-# PORT=5000
-# DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
+### 2. Buat File `.env` untuk Backend API
 
-# 3. Sinkronisasi database & Prisma Client
+Template konfigurasi tersimpan di `apps/api/.env.example`. Buat file `apps/api/.env` dengan konfigurasi berikut:
+
+```dotenv
+PORT=5000
+DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
+```
+
+> **Catatan:** Jika akun MySQL XAMPP Anda menggunakan password, sesuaikan nilai `DATABASE_URL` menjadi `mysql://root:PASSWORD_ANDA@localhost:3306/skillswap_db`.
+
+### 3. Nyalakan Layanan MySQL di XAMPP
+
+1. Buka aplikasi **XAMPP Control Panel**.
+2. Klik tombol **Start** pada baris modul **MySQL**.
+3. Pastikan status modul berubah menjadi **hijau (Running)** pada port `3306`.
+
+### 4. Sinkronisasi Skema Database & Generate Prisma Client
+
+Jalankan perintah berikut dari folder `apps/api`:
+
+```bash
 cd apps/api
 npx prisma db push
 cd ../..
 ```
 
-### 3. Jalankan Aplikasi (Buka 2 Terminal)
+Perintah ini akan secara otomatis membuat basis data `skillswap_db`, menyinkronkan seluruh tabel relasional (`User`, `UserSkill`, `SwapRequest`, `ChatMessage`), serta meng-generate Prisma Client.
 
-**Terminal 1 — Backend API:**
+### 5. Jalankan Aplikasi (Buka 2 Terminal Terpisah)
+
+#### Terminal 1 — Backend API Server:
 ```bash
 cd apps/api
 npx ts-node-dev --respawn --transpile-only src/server.ts
 ```
-*(Server berjalan di `http://localhost:5000`)*
+*Output yang diharapkan saat server berhasil berjalan:*
+```text
+[SkillSwap API] Server berjalan di http://localhost:5000
+```
 
-**Terminal 2 — Frontend Web:**
+#### Terminal 2 — Frontend Web Application:
 ```bash
 npm run dev:web
 ```
-*(Frontend berjalan di `http://localhost:5173`)*
+*Output yang diharapkan saat frontend siap:*
+```text
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+```
 
-Buka browser di **http://localhost:5173**!
+### 6. Verifikasi Health Endpoint Backend
 
----
+Untuk memastikan backend API merespons dengan normal, buka tab browser baru atau jalankan:
 
-## 🧪 Eksekusi Unit Test (Wajib All Passed)
+```bash
+curl http://localhost:5000/api/health
+```
 
-Jalankan pengujian unit test dari root project:
+Respons yang diharapkan:
+```json
+{
+  "status": "ok",
+  "service": "SkillSwap API",
+  "timestamp": "2026-10-28T13:30:00.000Z"
+}
+```
+
+### 7. Menjalankan Unit Test (Wajib All Passed)
+
+Pengujian unit test dijalankan menggunakan Jest untuk memvalidasi seluruh aturan bisnis pada level service. Anda dapat menjalankannya langsung dari root project:
+
 ```bash
 npm test
 ```
-Atau:
+
+Atau dari direktori backend API:
 ```bash
 cd apps/api
 npx jest --verbose
 ```
 
-**Hasil: 5 Test Suites Passed, 33 Tests Passed (100% Passed)**
-
----
-
-## 📁 Struktur Monorepo
-
+**Ekspektasi Hasil Pengujian (Status: ALL PASSED):**
 ```text
-SkillSwap-Project/
-├── apps/
-│   ├── api/                  # Backend Express + Prisma
-│   │   ├── prisma/
-│   │   │   └── schema.prisma # Schema database MySQL
-│   │   ├── src/
-│   │   │   ├── __tests__/    # 5 File Unit Test Business Logic (Jest)
-│   │   │   ├── config/       # Koneksi database Prisma
-│   │   │   ├── controllers/  # Request & Response Handlers
-│   │   │   ├── routes/       # Definisi endpoint RESTful
-│   │   │   ├── services/     # Aturan bisnis (Business Logic)
-│   │   │   ├── app.ts        # Inisialisasi Express & middleware
-│   │   │   └── server.ts     # Entry point server
-│   │   └── package.json
-│   └── web/                  # Frontend React + Vite
-│       └── src/
-│           ├── components/   # Navbar, SkillBadge, StatusBadge, ConfirmDialog, EmptyState
-│           ├── pages/        # Login, Dashboard, Profile, Explore, SwapRequests
-│           ├── services/     # Axios client API service
-│           └── App.tsx       # State sesi & router halaman
-├── packages/
-│   └── shared/               # Shared DTOs, Enums, & Interfaces
-├── HowToRun.md               # Panduan teknis instalasi & eksekusi
-├── checklist_mvp.md          # Checklist tugas Pertemuan 5, 6, & 7
-└── README.md                 # Dokumentasi umum repositori
+PASS src/__tests__/DashboardService.test.ts
+PASS src/__tests__/SwapRequestService.test.ts
+PASS src/__tests__/SkillService.test.ts
+PASS src/__tests__/ChatService.test.ts
+PASS src/__tests__/UserService.test.ts
+
+Test Suites: 5 passed, 5 total
+Tests:       33 passed, 33 total
+Snapshots:   0 total
+Time:        ~3.0 s
+Ran all test suites.
+```
+
+### 8. Akses Aplikasi & Akun Demo
+
+Buka peramban (browser) di alamat:
+```
+http://localhost:5173
+```
+
+Anda dapat langsung membuat akun baru melalui menu **"Belum punya akun? Daftar sekarang"**, atau menggunakan salah satu akun demo berikut:
+
+| Nama Pengguna | Alamat Email | Password | Keahlian Dimiliki (HAVE) | Keahlian Diinginkan (WANT) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Alice** | `alice@example.com` | `123456` | UI/UX Design, Figma | React TypeScript, Python |
+| **Bob** | `bob@example.com` | `123456` | Fullstack Web, Node.js | Graphic Design, UI/UX |
+| **Charlie** | `charlie@example.com` | `123456` | Music Production, Audio | Digital Marketing |
+
+### 9. Menghentikan Aplikasi (Stop & Cleanup)
+
+Tekan kombinasi tombol **`Ctrl + C`** pada masing-masing jendela terminal yang sedang aktif.
+
+Jika port 5000 masih tertahan oleh proses latar belakang Windows, gunakan perintah pemutus proses berikut:
+```powershell
+netstat -ano | findstr :5000
+taskkill /PID <NOMOR_PID> /F
 ```
 
 ---
 
-## 📋 Ringkasan Endpoint REST API
+## Troubleshooting
 
-| Method | Endpoint | Deskripsi |
-|---|---|---|
-| `POST` | `/api/users` | Registrasi user baru |
-| `POST` | `/api/users/login` | Autentikasi user |
-| `GET` | `/api/users/:id` | Detail profil pengguna |
-| `PUT` | `/api/users/:id` | Perbarui nama & bio pengguna |
-| `GET` | `/api/users/:id/skills` | Ambil daftar keahlian pengguna |
-| `POST` | `/api/users/:id/skills` | Tambah keahlian (`HAVE` / `WANT`) |
-| `DELETE` | `/api/skills/:id` | Hapus keahlian berdasarkan ID |
-| `GET` | `/api/explore` | Cari pengguna berdasarkan nama/skill |
-| `GET` | `/api/swap-requests` | Daftar permintaan tukar (masuk & keluar) |
-| `POST` | `/api/swap-requests` | Kirim permohonan barter skill baru |
-| `PUT` | `/api/swap-requests/:id` | Update status (`ACCEPTED` / `REJECTED`) |
-| `GET` | `/api/swap-requests/:id/messages` | Riwayat obrolan barter skill |
-| `POST` | `/api/swap-requests/:id/messages` | Kirim pesan koordinasi obrolan |
-| `GET` | `/api/dashboard` | Statistik kuadran & partner aktif |
+| Masalah | Kemungkinan Penyebab | Tindakan Solusi |
+| :--- | :--- | :--- |
+| `Can't reach database server at localhost:3306` | Layanan MySQL pada XAMPP belum dijalankan | Buka XAMPP Control Panel lalu klik **Start** pada modul MySQL. |
+| `address already in use :::5000` | Port 5000 masih dipakai proses node sebelumnya | Cari PID dengan `netstat -ano \| findstr :5000` lalu matikan dengan `taskkill /PID <PID> /F`. |
+| `Environment variable not found: DATABASE_URL` | File `apps/api/.env` belum dibuat atau path salah | Pastikan file `apps/api/.env` sudah ada dan memuat variabel `DATABASE_URL`. |
+| `Unknown argument password` pada Prisma | Prisma client belum di-generate ulang | Jalankan `npx prisma db push` dari dalam folder `apps/api`. |
+| Vite proxy error `aggregateerror` saat registrasi | Server backend API belum berjalan | Jalankan Terminal 1 (`npx ts-node-dev ... src/server.ts`) sebelum berinteraksi di browser. |
+| Halaman blank putih setelah login | State user belum termuat dengan benar | Refresh browser (Ctrl+F5) atau hapus riwayat sesi `localStorage` via DevTools (F12). |
+
+---
+
+## Struktur Project
+
+```text
+SkillSwap-Project/
+├── apps/
+│   ├── api/                      # Backend REST API (Node.js + Express + Prisma)
+│   │   ├── prisma/
+│   │   │   ├── schema.prisma     # Definisi skema basis data MySQL
+│   │   │   └── seed.ts           # Script database seeder opsional
+│   │   ├── src/
+│   │   │   ├── config/           # Inisialisasi Prisma Client singleton
+│   │   │   ├── controllers/      # HTTP Request & Response handlers
+│   │   │   ├── routes/           # Pemetaan endpoint Express router
+│   │   │   ├── services/         # Business logic & validasi aturan aplikasi
+│   │   │   ├── __tests__/        # 5 Suite Unit Test Jest (UserService, Skill, Swap, Chat, Dashboard)
+│   │   │   ├── app.ts            # Registrasi middleware Express & CORS
+│   │   │   └── server.ts         # Server entry point & listener
+│   │   ├── jest.config.js        # Konfigurasi ts-jest runner
+│   │   ├── tsconfig.json         # Konfigurasi compiler TypeScript API
+│   │   └── package.json
+│   └── web/                      # Frontend SPA (React 18 + Vite + Tailwind CSS)
+│       └── src/
+│           ├── components/       # UI Reusable (Navbar, SkillBadge, StatusBadge, ConfirmDialog, EmptyState)
+│           ├── pages/            # View halaman utama (Login, Dashboard, Profile, Explore, SwapRequests)
+│           ├── services/         # Axios API service caller
+│           └── App.tsx           # Router & provider sesi autentikasi pengguna
+├── packages/
+│   └── shared/                   # DTOs, Enums, & Model Interfaces bersama
+├── docs/                         # Dokumentasi Arsitektur & Standar Pengembangan
+│   ├── ide_proyek.md             # Dokumen proposal ide tugas matkul RPL
+│   ├── Agent.md                  # Panduan operasional AI coding agent
+│   ├── Coding_Style.md           # Standar gaya penulisan kode backend & frontend
+│   ├── Design_UI.md              # Spesifikasi token warna & komponen UI
+│   ├── Logging.md                # Konvensi dev log berkala
+│   └── DevLog.md                 # Log kronologis riwayat pengerjaan proyek
+├── HowToRun.md                   # Panduan cepat eksekusi aplikasi
+├── checklist_mvp.md              # Laporan checklist evaluasi Pertemuan 5, 6, & 7
+└── README.md                     # Dokumentasi utama repositori
+```
+
+---
+
+## Security Notes
+
+- Kredensial sensitif seperti kata sandi dan URL basis data dikelola melalui berkas `.env` dan **tidak di-commit ke repositori Git**.
+- File `apps/api/.env.example` disediakan sebagai acuan konfigurasi tanpa memuat rahasia produksi.
+- Kueri basis data dilindungi dari ancaman SQL Injection melalui pemanfaatan Prisma ORM Parameterized Queries.
+- Validasi logika bisnis ketat diterapkan pada layer service untuk mencegah manipulasi data oleh pihak yang tidak berhak (*Anti-IDOR* dan *Access Ownership Check* pada chat room).
+- Respons JSON API pada proses pendaftaran dan login secara ketat mengecualikan data password.
+
+---
+
+## Dokumen Lengkap
+
+### Dokumen Produk & Ide
+| Berkas | Deskripsi |
+| :--- | :--- |
+| [`docs/ide_proyek.md`](docs/ide_proyek.md) | Konsep ide proyek, perumusan masalah, profil target pengguna, fitur inti, dan kriteria keberhasilan. |
+| [`checklist_mvp.md`](checklist_mvp.md) | Laporan evaluasi tugas Pertemuan 5, 6, dan 7, bukti unit test, dan panduan skenario rekaman demo video. |
+| [`HowToRun.md`](HowToRun.md) | Panduan teknis lengkap langkah demi langkah menjalankan seluruh aplikasi dari awal. |
+
+### Dokumen Panduan Pengembangan
+| Berkas | Deskripsi |
+| :--- | :--- |
+| [`docs/Agent.md`](docs/Agent.md) | Panduan standar perilaku AI coding agent (aturan main, alur kerja task, larangan khusus). |
+| [`docs/Coding_Style.md`](docs/Coding_Style.md) | Standar penulisan kode backend (Express/Prisma) dan frontend (React/Tailwind), konvensi penamaan, dan format API. |
+| [`docs/Design_UI.md`](docs/Design_UI.md) | Spesifikasi antarmuka: palet warna, tipografi, status badge semantik, dan panduan komponen UI. |
+| [`docs/Logging.md`](docs/Logging.md) | Aturan dan konvensi penulisan dev log kerja berkala ke dalam `docs/DevLog.md`. |
+| [`docs/DevLog.md`](docs/DevLog.md) | Catatan log kronologis pengerjaan fitur, perbaikan bug, refactor, dan penambahan test suite. |
+
+---
+
+## Masalah yang Diselesaikan
+
+1. **Kendala Biaya Pelatihan Tinggi** — Memungkinkan individu mempelajari keahlian baru secara gratis melalui pertukaran kemampuan dua arah (*Skill A for Skill B*).
+2. **Kesulitan Menemukan Partner Belajar yang Cocok** — Menyediakan fitur pencarian dan pencocokan partner (*Skill Matching*) berdasarkan keahlian yang dimiliki (`HAVE`) dan yang ingin dipelajari (`WANT`).
+3. **Komunikasi yang Terfragmentasi** — Mengintegrasikan manajemen status permintaan tukar (*State Machine*) dan ruang pesan teks langsung (*Chat Room*) dalam satu platform terpadu.
+4. **Ketiadaan Pemantauan Progres Barter** — Dasbor analitik ringkas menampilkan metrik kuadran dan daftar kontak partner aktif yang sedang terhubung.
+
+---
+
+## Target Pengguna
+
+| Profil Pengguna | Karakteristik & Kebutuhan Utama |
+| :--- | :--- |
+| **Mahasiswa & Pelajar** | Mempelajari keahlian pendukung kuliah (pemrograman, bahasa asing) tanpa biaya finansial dengan menukarkan keahlian yang dimiliki. |
+| **Freelancer & Profesional Muda** | Memperluas keahlian lintas bidang (*cross-skilling*) untuk meningkatkan daya saing portofolio kerja secara kolaboratif. |
+| **Pembelajar Mandiri (Self-Learner)** | Mencari rekan belajar yang memiliki minat setara untuk sesi latihan rutin dan berbagi pengalaman praktis. |
+
+---
+
+## Fitur Inti (Core Features Status)
+
+Status fitur ditandai secara transparan: **[Ada]** = telah selesai diimplementasikan pada kode, **[Rencana]** = pengembangan lanjutan pasca-MVP 12 pertemuan.
+
+1. **[Ada] Autentikasi Pengguna** — Registrasi akun baru, validasi kredensial login, proteksi data password, dan logout sesi.
+2. **[Ada] Pengelolaan Profil & Biodata** — Pembaruan nama lengkap dan bio profil pengguna.
+3. **[Ada] Manajemen Inventaris Keahlian Barter** — Penambahan dan penghapusan keahlian tipe `HAVE` (Dimiliki) dan `WANT` (Diinginkan) dengan dialog konfirmasi.
+4. **[Ada] Eksplorasi & Pencarian Partner** — Pencarian pengguna secara real-time berdasarkan kata kunci nama atau keahlian, lengkap dengan filter tipe keahlian.
+5. **[Ada] Siklus Permintaan Pertukaran (Swap Request State Machine)** — Alur status `PENDING` $\rightarrow$ `ACCEPTED` / `REJECTED` / `COMPLETED`, dilengkapi pencegahan permohonan ke diri sendiri dan permohonan ganda.
+6. **[Ada] Ruang Obrolan Terintegrasi (Chat Room)** — Pengiriman pesan teks koordinasi antar-partner pada pertukaran yang telah disetujui (`ACCEPTED`) dengan polling otomatis berkala.
+7. **[Ada] Dasbor Statistik & Partner Terhubung** — Metrik statistik 4 kuadran dan tabel partner terhubung dengan tautan langsung ke obrolan.
+8. **[Rencana] Notifikasi Push Real-time** — Pengiriman pemberitahuan langsung ke browser saat menerima permintaan atau pesan baru via WebSockets.
+9. **[Rencana] Panggilan Video Pembelajaran** — Ruang tatap muka virtual bawaan di dalam aplikasi.
+10. **[Rencana] Sistem Ulasan & Reputasi Partner** — Pemberian rating bintang dan ulasan setelah sesi pertukaran selesai.
+
+---
+
+## Target Keberhasilan Aplikasi
+
+- Alur utama berjalan lancar dari awal hingga akhir: Pendaftaran Akun $\rightarrow$ Tambah Keahlian $\rightarrow$ Cari Partner $\rightarrow$ Ajukan Tukar $\rightarrow$ Terima Permintaan $\rightarrow$ Koordinasi via Chat Room.
+- Integritas aturan bisnis terjaga: 100% permintaan tukar ke diri sendiri dan permintaan ganda tertolak oleh validasi service.
+- Seluruh unit test business logic: **33 dari 33 tests PASSED (100% kelulusan)**.
+- Antarmuka web responsif dan bebas galat antarmuka (0 critical bugs pada pengujian alur utama).
