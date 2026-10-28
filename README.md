@@ -1,223 +1,144 @@
 # SkillSwap — Platform Pertukaran Keahlian Peer-to-Peer
 
-> Platform web komunitas untuk menghubungkan individu yang ingin mempelajari keahlian baru dengan orang yang memiliki keahlian tersebut, melalui sistem barter skill secara langsung (peer-to-peer) tanpa biaya finansial.
+> **Platform Web Responsif Berbasis Komunitas untuk Pertukaran Keahlian (Barter Skill) Antar-Pengguna Berdasarkan Minat dan Kebutuhan Spesifik**
+
+Aplikasi ini dikembangkan untuk memfasilitasi individu yang ingin mempelajari keterampilan baru (misalnya pemrograman, desain grafis, bahasa asing, atau musik) secara gratis melalui barter keahlian langsung (*peer-to-peer*) tanpa melibatkan transaksi uang.
 
 ---
 
-## Fitur Utama
-
-- **Autentikasi** — Daftar & masuk menggunakan email dan password
-- **Profil & Keahlian** — Tambah/hapus keahlian yang dimiliki (`HAVE`) dan ingin dipelajari (`WANT`)
-- **Eksplorasi Partner** — Cari dan filter pengguna lain berdasarkan keahlian
-- **Swap Request** — Kirim, terima, atau tolak permintaan pertukaran keahlian
-- **Chat** — Ruang obrolan antar pengguna yang sudah terhubung (status `ACCEPTED`)
-- **Dashboard** — Ringkasan statistik dan daftar partner aktif
+## 📑 Dokumen Proyek & Panduan
+- 📖 [Panduan Menjalankan Lengkap (HowToRun.md)](./HowToRun.md)
+- ✅ [Checklist Evaluasi MVP Pertemuan 5, 6, & 7 (checklist_mvp.md)](./checklist_mvp.md)
 
 ---
 
-## Tech Stack
+## 🚀 Fitur Utama (MVP Scope)
 
-| Layer | Teknologi |
+1. **Autentikasi Pengguna**: Registrasi akun baru dan login dengan email & password.
+2. **Manajemen Profil & Keahlian**: Kelola nama, bio, serta keahlian yang dimiliki (`HAVE`) dan yang ingin dipelajari (`WANT`).
+3. **Eksplorasi Partner**: Cari dan filter pengguna lain berdasarkan nama atau keahlian yang ditawarkan/dicari.
+4. **Manajemen Swap Request**: Kirim permintaan barter skill, terima (`ACCEPTED`), atau tolak (`REJECTED`) permintaan masuk.
+5. **Ruang Obrolan (Chat Room)**: Fasilitas koordinasi teks antar-partner yang telah disetujui permintaannya.
+6. **Dashboard Interaktif**: Statistik real-time (jumlah skill, permintaan pending, swap aktif) serta daftar partner terhubung.
+
+---
+
+## 🛠️ Tech Stack
+
+| Komponen | Teknologi |
 |---|---|
-| Frontend | React 18 + TypeScript + Vite + Tailwind CSS |
-| Backend | Node.js + TypeScript + Express |
-| Database | MySQL (via XAMPP) |
-| ORM | Prisma |
-| Shared Types | npm workspace (`packages/shared`) |
+| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons |
+| **Backend** | Node.js, Express, TypeScript, Prisma ORM |
+| **Database** | MySQL (via XAMPP) |
+| **Testing** | Jest, ts-jest (Unit Testing All Passed) |
+| **Architecture** | Monorepo dengan npm workspaces (`apps/web`, `apps/api`, `packages/shared`) |
 
 ---
 
-## Prasyarat
+## ⚡ Cara Cepat Menjalankan Aplikasi
 
-Pastikan sudah terinstall di komputer kamu:
+### 1. Prasyarat
+- **Node.js** v18+ sudah terpasang
+- **XAMPP** sudah terpasang (nyalakan **MySQL** di XAMPP hingga status hijau)
 
-- [Node.js](https://nodejs.org/) versi 18 atau lebih baru
-- [XAMPP](https://www.apachefriends.org/) (untuk MySQL)
-- Git
-
----
-
-## Cara Menjalankan (Setup Pertama Kali)
-
-### 1. Clone Repository
-
+### 2. Setup Database & Dependencies
 ```bash
-git clone https://github.com/BijanLungga/SkillSwap-Project.git
-cd SkillSwap-Project
-```
-
-### 2. Install Semua Dependencies
-
-```bash
+# 1. Install dependencies
 npm install
-```
 
-### 3. Buat File `.env` untuk Backend
+# 2. Setup file .env pada apps/api/.env
+# Pastikan isinya:
+# PORT=5000
+# DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
 
-Buat file baru di `apps/api/.env`:
-
-```env
-PORT=5000
-DATABASE_URL="mysql://root:@localhost:3306/skillswap_db"
-```
-
-> **Catatan:** Jika MySQL kamu menggunakan password, ganti `root:` menjadi `root:PASSWORD_KAMU`.
-
-### 4. Nyalakan MySQL di XAMPP
-
-1. Buka **XAMPP Control Panel**
-2. Klik **Start** pada baris **MySQL**
-3. Tunggu sampai status berubah menjadi **hijau (Running)**
-
-### 5. Sync Database & Generate Prisma Client
-
-Jalankan dari folder `apps/api`:
-
-```bash
+# 3. Sinkronisasi database & Prisma Client
 cd apps/api
 npx prisma db push
-```
-
-Perintah ini akan:
-- Membuat database `skillswap_db` secara otomatis
-- Membuat semua tabel sesuai schema
-- Meng-generate Prisma Client
-
-Kembali ke folder root:
-
-```bash
 cd ../..
 ```
 
----
+### 3. Jalankan Aplikasi (Buka 2 Terminal)
 
-## Cara Menjalankan Aplikasi (Setiap Saat)
-
-> ⚠️ **Pastikan MySQL di XAMPP sudah Running sebelum memulai.**
-
-Buka **2 terminal terpisah** di folder root project:
-
-### Terminal 1 — Backend API
-
+**Terminal 1 — Backend API:**
 ```bash
 cd apps/api
 npx ts-node-dev --respawn --transpile-only src/server.ts
 ```
+*(Server berjalan di `http://localhost:5000`)*
 
-Tunggu hingga muncul:
-```
-[SkillSwap API] Server berjalan di http://localhost:5000
-```
-
-### Terminal 2 — Frontend Web
-
+**Terminal 2 — Frontend Web:**
 ```bash
 npm run dev:web
 ```
+*(Frontend berjalan di `http://localhost:5173`)*
 
-Tunggu hingga muncul:
-```
-  ➜  Local:   http://localhost:5173/
-```
-
-### Buka di Browser
-
-```
-http://localhost:5173
-```
+Buka browser di **http://localhost:5173**!
 
 ---
 
-## Cara Menghentikan Aplikasi
+## 🧪 Eksekusi Unit Test (Wajib All Passed)
 
-Tekan **`Ctrl + C`** di masing-masing terminal.
-
-Jika ada error `address already in use :::5000`, jalankan:
-
+Jalankan pengujian unit test dari root project:
 ```bash
-# Cari PID proses di port 5000
-netstat -ano | findstr :5000
-
-# Matikan proses (ganti 12345 dengan PID yang muncul)
-taskkill /PID 12345 /F
+npm test
 ```
+Atau:
+```bash
+cd apps/api
+npx jest --verbose
+```
+
+**Hasil: 5 Test Suites Passed, 33 Tests Passed (100% Passed)**
 
 ---
 
-## Urutan Wajib Setiap Kali Mau Pakai SkillSwap
+## 📁 Struktur Monorepo
 
-```
-1. Nyalakan XAMPP → Start MySQL
-2. Jalankan Backend (Terminal 1)
-3. Jalankan Frontend (Terminal 2)
-4. Buka http://localhost:5173
-```
-
----
-
-## Struktur Project
-
-```
+```text
 SkillSwap-Project/
 ├── apps/
 │   ├── api/                  # Backend Express + Prisma
 │   │   ├── prisma/
-│   │   │   └── schema.prisma
+│   │   │   └── schema.prisma # Schema database MySQL
 │   │   ├── src/
-│   │   │   ├── config/       # Koneksi database
-│   │   │   ├── controllers/  # Request handler
-│   │   │   ├── routes/       # Route definitions
-│   │   │   └── services/     # Business logic
-│   │   └── .env              # Environment variables (buat sendiri)
+│   │   │   ├── __tests__/    # 5 File Unit Test Business Logic (Jest)
+│   │   │   ├── config/       # Koneksi database Prisma
+│   │   │   ├── controllers/  # Request & Response Handlers
+│   │   │   ├── routes/       # Definisi endpoint RESTful
+│   │   │   ├── services/     # Aturan bisnis (Business Logic)
+│   │   │   ├── app.ts        # Inisialisasi Express & middleware
+│   │   │   └── server.ts     # Entry point server
+│   │   └── package.json
 │   └── web/                  # Frontend React + Vite
 │       └── src/
-│           ├── components/   # Komponen reusable
-│           ├── pages/        # Halaman utama
-│           └── services/     # Axios API calls
-└── packages/
-    └── shared/               # TypeScript types bersama
+│           ├── components/   # Navbar, SkillBadge, StatusBadge, ConfirmDialog, EmptyState
+│           ├── pages/        # Login, Dashboard, Profile, Explore, SwapRequests
+│           ├── services/     # Axios client API service
+│           └── App.tsx       # State sesi & router halaman
+├── packages/
+│   └── shared/               # Shared DTOs, Enums, & Interfaces
+├── HowToRun.md               # Panduan teknis instalasi & eksekusi
+├── checklist_mvp.md          # Checklist tugas Pertemuan 5, 6, & 7
+└── README.md                 # Dokumentasi umum repositori
 ```
 
 ---
 
-## API Endpoints
+## 📋 Ringkasan Endpoint REST API
 
 | Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| `POST` | `/api/users` | Daftar akun baru |
-| `POST` | `/api/users/login` | Login |
-| `GET` | `/api/users/:id` | Detail pengguna |
-| `PUT` | `/api/users/:id` | Update profil |
-| `GET` | `/api/users/:id/skills` | Daftar keahlian |
-| `POST` | `/api/users/:id/skills` | Tambah keahlian |
-| `DELETE` | `/api/skills/:id` | Hapus keahlian |
-| `GET` | `/api/explore` | Cari partner |
-| `GET` | `/api/swap-requests` | Daftar swap request |
-| `POST` | `/api/swap-requests` | Kirim swap request |
-| `PUT` | `/api/swap-requests/:id` | Update status request |
-| `GET` | `/api/swap-requests/:id/messages` | Riwayat chat |
-| `POST` | `/api/swap-requests/:id/messages` | Kirim pesan |
-| `GET` | `/api/dashboard` | Data dashboard |
-
----
-
-## Troubleshooting
-
-| Error | Solusi |
-|---|---|
-| `Cannot find module /app.js` | Pastikan `server.ts` mengimport `'./app'` tanpa `.js` |
-| `Environment variable not found: DATABASE_URL` | Pastikan file `apps/api/.env` sudah dibuat dan berisi `DATABASE_URL` |
-| `Can't reach database server at localhost:3306` | Nyalakan MySQL di XAMPP terlebih dahulu |
-| `address already in use :::5000` | Ada proses lain di port 5000, matikan dengan `taskkill /PID <pid> /F` |
-| `Unknown argument 'password'` | Jalankan `npx prisma db push` dari folder `apps/api` untuk sync schema |
-| Tombol tidak bisa diklik di web | Pastikan backend sudah jalan di port 5000 |
-
----
-
-## Kontribusi
-
-1. Fork repository ini
-2. Buat branch baru: `git checkout -b fitur/nama-fitur`
-3. Commit perubahan: `git commit -m "feat: deskripsi fitur"`
-4. Push ke branch: `git push origin fitur/nama-fitur`
-5. Buat Pull Request
+|---|---|---|
+| `POST` | `/api/users` | Registrasi user baru |
+| `POST` | `/api/users/login` | Autentikasi user |
+| `GET` | `/api/users/:id` | Detail profil pengguna |
+| `PUT` | `/api/users/:id` | Perbarui nama & bio pengguna |
+| `GET` | `/api/users/:id/skills` | Ambil daftar keahlian pengguna |
+| `POST` | `/api/users/:id/skills` | Tambah keahlian (`HAVE` / `WANT`) |
+| `DELETE` | `/api/skills/:id` | Hapus keahlian berdasarkan ID |
+| `GET` | `/api/explore` | Cari pengguna berdasarkan nama/skill |
+| `GET` | `/api/swap-requests` | Daftar permintaan tukar (masuk & keluar) |
+| `POST` | `/api/swap-requests` | Kirim permohonan barter skill baru |
+| `PUT` | `/api/swap-requests/:id` | Update status (`ACCEPTED` / `REJECTED`) |
+| `GET` | `/api/swap-requests/:id/messages` | Riwayat obrolan barter skill |
+| `POST` | `/api/swap-requests/:id/messages` | Kirim pesan koordinasi obrolan |
+| `GET` | `/api/dashboard` | Statistik kuadran & partner aktif |
