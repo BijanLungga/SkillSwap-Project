@@ -73,8 +73,7 @@ Buka **2 terminal terpisah**:
 ### Terminal 1 — Backend API
 
 ```bash
-cd apps/api
-npx ts-node-dev --respawn --transpile-only src/server.ts
+npm run dev:api
 ```
 
 Tunggu hingga muncul:
@@ -152,7 +151,7 @@ taskkill /PID 12345 /F
 |-------|--------|
 | `Cannot find module ./app` | Pastikan `server.ts` mengimport `'./app'` tanpa `.js` |
 | `Environment variable not found: DATABASE_URL` | Pastikan file `apps/api/.env` sudah ada dan berisi `DATABASE_URL` |
-| `Can't reach database server at localhost:3306` | Nyalakan MySQL di XAMPP terlebih dahulu |
+| `Can't reach database server at localhost:3306` | Nyalakan MySQL di Laragon (klik "Start All") atau XAMPP terlebih dahulu |
 | `address already in use :::5000` | Kill proses lama: `taskkill /PID <pid> /F` |
 | `Unknown argument 'password'` | Jalankan `npx prisma db push` dari folder `apps/api` |
 | Tombol tidak bisa diklik | Pastikan backend sudah berjalan di port 5000 |
