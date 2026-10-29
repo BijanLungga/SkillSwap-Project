@@ -132,8 +132,10 @@ export const NotificationProvider: React.FC<{
     const connectWebSocket = () => {
       try {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        // Connect via Vite proxy or fallback directly to port 5000
-        const wsUrl = `${protocol}//${window.location.host}/ws?userId=${currentUser.id}`;
+        const isDev = window.location.port === '5173' || window.location.hostname === 'localhost';
+        const wsUrl = isDev
+          ? `ws://localhost:5000/ws?userId=${currentUser.id}`
+          : `${protocol}//${window.location.host}/ws?userId=${currentUser.id}`;
         socket = new WebSocket(wsUrl);
 
         socket.onopen = () => {

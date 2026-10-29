@@ -12,7 +12,16 @@ export default defineConfig({
       },
       '/ws': {
         target: 'ws://localhost:5000',
-        ws: true
+        ws: true,
+        configure: (proxy) => {
+          proxy.on('error', (err: any) => {
+            // Tangani ECONNRESET secara bersih saat socket ditutup oleh browser/backend
+            if (err?.code === 'ECONNRESET' || err?.code === 'ECONNREFUSED') {
+              return;
+            }
+            console.error('[vite ws proxy error]', err?.message || err);
+          });
+        }
       }
     }
   }
