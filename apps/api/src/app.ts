@@ -6,6 +6,8 @@ import swapRequestRoutes from './routes/SwapRequestRoutes';
 import chatRoutes from './routes/ChatRoutes';
 import exploreRoutes from './routes/ExploreRoutes';
 import dashboardRoutes from './routes/DashboardRoutes';
+import notificationRoutes from './routes/NotificationRoutes';
+import reviewRoutes from './routes/ReviewRoutes';
 
 const app = express();
 
@@ -22,5 +24,7 @@ app.use('/api', swapRequestRoutes);
 app.use('/api', chatRoutes);
 app.use('/api', exploreRoutes);
 app.use('/api', dashboardRoutes);
+app.use('/api', notificationRoutes);
+app.use('/api', reviewRoutes);
 
 export default app;

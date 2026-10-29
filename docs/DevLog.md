@@ -4,6 +4,40 @@
 
 ---
 
+## [2026-10-29 08:50 WIB] — Implementasi Fitur 8 (Notifikasi Push Real-time) & Fitur 10 (Sistem Ulasan & Reputasi Partner)
+
+- **Agent:** Gemini 3.8 Flash
+- **Tipe:** Pembangunan Fitur Baru & Penambahan Test Suite
+- **Status:** Selesai
+- **Modul:** Fullstack (Backend WebSocket/REST API + Frontend React/Tailwind + Prisma ORM)
+- **File terdampak:**
+  - `apps/api/prisma/schema.prisma` (model Notification & Review, relasi pada User & SwapRequest)
+  - `packages/shared/src/types/index.ts` (tipe Notification, NotificationType, Review, UserReputation)
+  - `apps/api/src/services/WebSocketService.ts` (baru: WebSocket connection manager ws://localhost:5000/ws)
+  - `apps/api/src/services/NotificationService.ts` (baru: business logic notifikasi, badge count, auto-push)
+  - `apps/api/src/services/ReviewService.ts` (baru: validasi 1-5 bintang, swap COMPLETED only, anti-duplikasi, reputasi agregat)
+  - `apps/api/src/services/SwapRequestService.ts` (integrasi trigger notifikasi saat dibuat & status berubah)
+  - `apps/api/src/services/ChatService.ts` (integrasi trigger notifikasi pesan baru)
+  - `apps/api/src/controllers/NotificationController.ts` & `ReviewController.ts` (REST controllers)
+  - `apps/api/src/routes/NotificationRoutes.ts` & `ReviewRoutes.ts` (Express routing)
+  - `apps/api/src/server.ts` (attach HTTP Server + WebSocket Server)
+  - `apps/api/src/__tests__/NotificationService.test.ts` (baru: 10 unit tests)
+  - `apps/api/src/__tests__/ReviewService.test.ts` (baru: 9 unit tests)
+  - `apps/web/src/context/NotificationContext.tsx` (baru: WebSocket client & desktop browser push notification)
+  - `apps/web/src/components/NotificationDropdown.tsx` (baru: lonceng notifikasi, unread counter badge, mark all read)
+  - `apps/web/src/components/NotificationToast.tsx` (baru: floating toast alert instan)
+  - `apps/web/src/components/ReviewModal.tsx` (baru: modal rating bintang 1-5 interaktif & komentar ulasan)
+  - `apps/web/src/components/ReputationBadge.tsx` (baru: widget rating reputasi bintang)
+  - `apps/web/src/pages/SwapRequests.tsx` (tombol ulasan pada status COMPLETED)
+  - `apps/web/src/pages/Profile.tsx` (bagian reputasi & testimoni partner)
+  - `apps/web/src/pages/Explore.tsx` (tampilan reputasi pada kartu partner)
+  - `README.md` (pembaruan status fitur 8 & 10 menjadi [Ada], unit test 52/52 passed)
+- **Deskripsi:**
+  Mengimplementasikan Fitur 8 (Notifikasi Push Real-time via WebSocket terintegrasi ke browser dan antarmuka dengan lonceng notifikasi dan toast alert) serta Fitur 10 (Sistem Ulasan & Reputasi Partner dengan rating bintang 1-5, validasi aturan bisnis pertukaran COMPLETED, pencegahan self-review & duplikasi, serta agregasi rating rata-rata). Menambahkan 2 test suites baru sehingga seluruh pengujian mencapai 52 unit tests ALL PASSED.
+- **Error/Kendala:** Tidak ada.
+
+---
+
 ## [2026-10-28 14:15 WIB] — Optimalisasi tsconfig.json dan Fix Extension Import Web
 
 - **Agent:** Gemini 3.8 Flash

@@ -1,4 +1,5 @@
 import prisma from '../config/database';
+import { createNotification } from './NotificationService';
 
 const includeUsersWithSkills = {
   sender: { select: { id: true, name: true, email: true, bio: true, createdAt: true, skills: true } },
@@ -43,10 +44,26 @@ export const createSwapRequest = async (senderId: string, receiverId: string, me
   });
   if (activeSwap) throw new Error('Sudah ada sesi pertukaran aktif antara kedua pengguna');
 
-  return prisma.swapRequest.create({
+  const created = await prisma.swapRequest.create({
     data: { senderId, receiverId, message },
     include: includeUsersWithSkills,
   });
+
+  // Kirim notifikasi ke receiver
+  try {
+    const senderName = created.sender?.name || 'Seseorang';
+    await createNotification({
+      userId: receiverId,
+      type: 'SWAP_REQUEST_RECEIVED',
+      title: 'Permintaan Pertukaran Baru',
+      message: `${senderName} mengirim permohonan barter keahlian kepada Anda.`,
+      link: '/swap-requests',
+    });
+  } catch (err) {
+    // Fail-safe
+  }
+
+  return created;
 };
 
 export const updateSwapRequestStatus = async (id: string, status: 'ACCEPTED' | 'REJECTED' | 'COMPLETED') => {
@@ -57,9 +74,52 @@ export const updateSwapRequestStatus = async (id: string, status: 'ACCEPTED' | '
     throw new Error('Permintaan tukar sudah tidak dapat diubah');
   }
 
-  return prisma.swapRequest.update({
+  const updated = await prisma.swapRequest.update({
     where: { id },
     data: { status },
     include: includeUsersWithSkills,
   });
+
+  // Kirim notifikasi status perubahan
+  try {
+    if (status === 'ACCEPTED') {
+      const partnerName = updated.receiver?.name || 'Partner';
+      await createNotification({
+        userId: updated.senderId,
+        type: 'SWAP_REQUEST_ACCEPTED',
+        title: 'Permintaan Pertukaran Disetujui',
+        message: `${partnerName} telah menyetujui permintaan barter keahlian Anda. Silakan mulai berkoordinasi di chat!`,
+        link: '/swap-requests',
+      });
+    } else if (status === 'REJECTED') {
+      const partnerName = updated.receiver?.name || 'Partner';
+      await createNotification({
+        userId: updated.senderId,
+        type: 'SWAP_REQUEST_REJECTED',
+        title: 'Permintaan Pertukaran Ditolak',
+        message: `${partnerName} belum dapat menerima permohonan barter keahlian Anda saat ini.`,
+        link: '/swap-requests',
+      });
+    } else if (status === 'COMPLETED') {
+      // Beritahu kedua belah pihak untuk mengisi ulasan
+      await createNotification({
+        userId: updated.senderId,
+        type: 'SWAP_REQUEST_COMPLETED',
+        title: 'Sesi Pertukaran Selesai',
+        message: 'Sesi barter telah selesai. Luangkan waktu untuk memberikan ulasan & rating bintang bagi partner Anda!',
+        link: '/swap-requests',
+      });
+      await createNotification({
+        userId: updated.receiverId,
+        type: 'SWAP_REQUEST_COMPLETED',
+        title: 'Sesi Pertukaran Selesai',
+        message: 'Sesi barter telah selesai. Luangkan waktu untuk memberikan ulasan & rating bintang bagi partner Anda!',
+        link: '/swap-requests',
+      });
+    }
+  } catch (err) {
+    // Fail-safe
+  }
+
+  return updated;
 };

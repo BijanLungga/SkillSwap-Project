@@ -123,16 +123,18 @@ npx jest --verbose
 
 **Ekspektasi Hasil Pengujian (Status: ALL PASSED):**
 ```text
-PASS src/__tests__/DashboardService.test.ts
-PASS src/__tests__/SwapRequestService.test.ts
 PASS src/__tests__/SkillService.test.ts
-PASS src/__tests__/ChatService.test.ts
+PASS src/__tests__/DashboardService.test.ts
 PASS src/__tests__/UserService.test.ts
+PASS src/__tests__/NotificationService.test.ts
+PASS src/__tests__/ReviewService.test.ts
+PASS src/__tests__/ChatService.test.ts
+PASS src/__tests__/SwapRequestService.test.ts
 
-Test Suites: 5 passed, 5 total
-Tests:       33 passed, 33 total
+Test Suites: 7 passed, 7 total
+Tests:       52 passed, 52 total
 Snapshots:   0 total
-Time:        ~3.0 s
+Time:        ~3.8 s
 Ran all test suites.
 ```
 
@@ -274,21 +276,21 @@ Status fitur ditandai secara transparan: **[Ada]** = telah selesai diimplementas
 1. **[Ada] Autentikasi Pengguna** — Registrasi akun baru, validasi kredensial login, proteksi data password, dan logout sesi.
 2. **[Ada] Pengelolaan Profil & Biodata** — Pembaruan nama lengkap dan bio profil pengguna.
 3. **[Ada] Manajemen Inventaris Keahlian Barter** — Penambahan dan penghapusan keahlian tipe `HAVE` (Dimiliki) dan `WANT` (Diinginkan) dengan dialog konfirmasi.
-4. **[Ada] Eksplorasi & Pencarian Partner** — Pencarian pengguna secara real-time berdasarkan kata kunci nama atau keahlian, lengkap dengan filter tipe keahlian.
+4. **[Ada] Eksplorasi & Pencarian Partner** — Pencarian pengguna secara real-time berdasarkan kata kunci nama atau keahlian, lengkap dengan filter tipe keahlian dan rating partner.
 5. **[Ada] Siklus Permintaan Pertukaran (Swap Request State Machine)** — Alur status `PENDING` $\rightarrow$ `ACCEPTED` / `REJECTED` / `COMPLETED`, dilengkapi pencegahan permohonan ke diri sendiri dan permohonan ganda.
 6. **[Ada] Ruang Obrolan Terintegrasi (Chat Room)** — Pengiriman pesan teks koordinasi antar-partner pada pertukaran yang telah disetujui (`ACCEPTED`) dengan polling otomatis berkala.
 7. **[Ada] Dasbor Statistik & Partner Terhubung** — Metrik statistik 4 kuadran dan tabel partner terhubung dengan tautan langsung ke obrolan.
-8. **[Rencana] Notifikasi Push Real-time** — Pengiriman pemberitahuan langsung ke browser saat menerima permintaan atau pesan baru via WebSockets.
+8. **[Ada] Notifikasi Push Real-time** — Pengiriman pemberitahuan langsung ke browser saat menerima permintaan barter, persetujuan/penolakan, atau pesan baru via WebSockets terintegrasi.
 9. **[Rencana] Panggilan Video Pembelajaran** — Ruang tatap muka virtual bawaan di dalam aplikasi.
-10. **[Rencana] Sistem Ulasan & Reputasi Partner** — Pemberian rating bintang dan ulasan setelah sesi pertukaran selesai.
+10. **[Ada] Sistem Ulasan & Reputasi Partner** — Pemberian rating bintang (1-5) dan testimoni ulasan setelah sesi pertukaran selesai (`COMPLETED`), serta kalkulasi reputasi partner.
 
 ---
 
 ## Target Keberhasilan Aplikasi
 
-- Alur utama berjalan lancar dari awal hingga akhir: Pendaftaran Akun $\rightarrow$ Tambah Keahlian $\rightarrow$ Cari Partner $\rightarrow$ Ajukan Tukar $\rightarrow$ Terima Permintaan $\rightarrow$ Koordinasi via Chat Room.
+- Alur utama berjalan lancar dari awal hingga akhir: Pendaftaran Akun $\rightarrow$ Tambah Keahlian $\rightarrow$ Cari Partner $\rightarrow$ Ajukan Tukar $\rightarrow$ Terima Permintaan $\rightarrow$ Koordinasi via Chat Room $\rightarrow$ Selesaikan Pertukaran $\rightarrow$ Beri Ulasan & Rating.
 - Integritas aturan bisnis terjaga: 100% permintaan tukar ke diri sendiri dan permintaan ganda tertolak oleh validasi service.
-- Seluruh unit test business logic: **33 dari 33 tests PASSED (100% kelulusan)**.
+- Seluruh unit test business logic: **52 dari 52 tests PASSED (100% kelulusan di 7 test suites)**.
 - Antarmuka web responsif dan bebas galat antarmuka (0 critical bugs pada pengujian alur utama).
 
 

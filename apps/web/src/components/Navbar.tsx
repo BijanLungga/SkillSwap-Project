@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, LogOut, User as UserIcon } from 'lucide-react';
+import NotificationDropdown from './NotificationDropdown';
 
 interface NavbarProps {
   currentUser: { id: string; name: string; email: string };
@@ -45,6 +46,7 @@ export default function Navbar({ currentUser, onLogout }: NavbarProps) {
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <div className="flex items-center space-x-4">
+              <NotificationDropdown />
               <div className="flex items-center text-sm font-medium text-gray-700">
                 <UserIcon className="h-5 w-5 mr-2 text-gray-400" />
                 {currentUser.name}
@@ -58,7 +60,8 @@ export default function Navbar({ currentUser, onLogout }: NavbarProps) {
               </button>
             </div>
           </div>
-          <div className="-mr-2 flex items-center sm:hidden">
+          <div className="-mr-2 flex items-center space-x-2 sm:hidden">
+            <NotificationDropdown />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"

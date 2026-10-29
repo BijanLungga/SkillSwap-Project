@@ -23,4 +23,16 @@ export const sendMessage = (swapRequestId: string, data: { senderId: string; mes
 
 export const getDashboard = (userId: string) => api.get('/dashboard', { params: { userId } });
 
+// Fitur 8: Notifikasi Real-time
+export const getNotifications = (userId: string) => api.get('/notifications', { params: { userId } });
+export const getUnreadNotificationCount = (userId: string) => api.get('/notifications/unread-count', { params: { userId } });
+export const markNotificationAsRead = (id: string, userId: string) => api.patch(`/notifications/${id}/read`, { userId });
+export const markAllNotificationsAsRead = (userId: string) => api.patch('/notifications/read-all', { userId });
+
+// Fitur 10: Sistem Ulasan & Reputasi Partner
+export const createReview = (data: { swapRequestId: string; reviewerId: string; rating: number; comment?: string }) => api.post('/reviews', data);
+export const getUserReviews = (userId: string) => api.get(`/users/${userId}/reviews`);
+export const getUserReputation = (userId: string) => api.get(`/users/${userId}/reputation`);
+export const getSwapReviews = (swapRequestId: string) => api.get(`/swap-requests/${swapRequestId}/reviews`);
+
 export default api;

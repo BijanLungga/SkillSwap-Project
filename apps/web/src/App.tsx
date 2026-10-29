@@ -6,6 +6,8 @@ import Profile from './pages/Profile';
 import Explore from './pages/Explore';
 import SwapRequests from './pages/SwapRequests';
 import Navbar from './components/Navbar';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationToast from './components/NotificationToast';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<any>(() => {
@@ -39,18 +41,21 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar currentUser={currentUser} onLogout={handleLogout} />
-        <main className="max-w-7xl mx-auto px-4 py-6">
-          <Routes>
-            <Route path="/" element={<Dashboard currentUser={currentUser} />} />
-            <Route path="/profile" element={<Profile currentUser={currentUser} onUpdateUser={handleUpdateUser} />} />
-            <Route path="/explore" element={<Explore currentUser={currentUser} />} />
-            <Route path="/swap-requests" element={<SwapRequests currentUser={currentUser} />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-      </div>
+      <NotificationProvider currentUser={currentUser}>
+        <div className="min-h-screen bg-gray-50">
+          <Navbar currentUser={currentUser} onLogout={handleLogout} />
+          <NotificationToast />
+          <main className="max-w-7xl mx-auto px-4 py-6">
+            <Routes>
+              <Route path="/" element={<Dashboard currentUser={currentUser} />} />
+              <Route path="/profile" element={<Profile currentUser={currentUser} onUpdateUser={handleUpdateUser} />} />
+              <Route path="/explore" element={<Explore currentUser={currentUser} />} />
+              <Route path="/swap-requests" element={<SwapRequests currentUser={currentUser} />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </NotificationProvider>
     </BrowserRouter>
   );
 }

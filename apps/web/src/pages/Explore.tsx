@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { exploreUsers, createSwapRequest } from '../services/api';
+import { exploreUsers, createSwapRequest, getUserReputation } from '../services/api';
 import SkillBadge from '../components/SkillBadge';
 import EmptyState from '../components/EmptyState';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ReputationBadge from '../components/ReputationBadge';
 import { Search } from 'lucide-react';
 
 export default function Explore({ currentUser }: { currentUser: any }) {
   const [users, setUsers] = useState<any[]>([]);
+  const [reputations, setReputations] = useState<Record<string, { averageRating: number; totalReviews: number }>>({});
   const [search, setSearch] = useState('');
   const [skillType, setSkillType] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,22 @@ export default function Explore({ currentUser }: { currentUser: any }) {
     setLoading(true);
     try {
       const res = await exploreUsers({ search, skillType, userId: currentUser.id });
-      setUsers(res.data.data.users);
+      const userList = res.data.data.users || [];
+      setUsers(userList);
+
+      // Fetch partner reputation
+      const repMap: Record<string, any> = {};
+      await Promise.all(
+        userList.map(async (u: any) => {
+          try {
+            const rep = await getUserReputation(u.id);
+            repMap[u.id] = rep.data.data;
+          } catch (e) {
+            // Ignored
+          }
+        })
+      );
+      setReputations(repMap);
     } catch (err) {
       console.error(err);
     } finally {
@@ -103,7 +120,16 @@ export default function Explore({ currentUser }: { currentUser: any }) {
           {users.map(user => (
             <div key={user.id} className="bg-white rounded-lg shadow overflow-hidden flex flex-col">
               <div className="p-6 flex-1">
-                <h3 className="text-lg font-medium text-gray-900">{user.name}</h3>
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="text-lg font-medium text-gray-900">{user.name}</h3>
+                  {reputations[user.id] && (
+                    <ReputationBadge
+                      averageRating={reputations[user.id].averageRating}
+                      totalReviews={reputations[user.id].totalReviews}
+                      size="sm"
+                    />
+                  )}
+                </div>
                 <p className="mt-1 text-sm text-gray-500 line-clamp-2 mb-4">{user.bio || '-'}</p>
                 
                 <div className="space-y-4">

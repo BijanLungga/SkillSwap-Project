@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { getUser, updateUser, getUserSkills, addSkill, deleteSkill } from '../services/api';
+import { getUser, updateUser, getUserSkills, addSkill, deleteSkill, getUserReputation, getUserReviews } from '../services/api';
 import SkillBadge from '../components/SkillBadge';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ReputationBadge from '../components/ReputationBadge';
+import { Star } from 'lucide-react';
 
 export default function Profile({ currentUser, onUpdateUser }: { currentUser: any, onUpdateUser: (u:any)=>void }) {
   const [profile, setProfile] = useState<any>(null);
   const [skills, setSkills] = useState<any[]>([]);
+  const [reputation, setReputation] = useState<{ averageRating: number; totalReviews: number }>({ averageRating: 0, totalReviews: 0 });
+  const [reviews, setReviews] = useState<any[]>([]);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ name: '', bio: '' });
   const [newSkill, setNewSkill] = useState({ skillName: '', skillType: 'HAVE' as 'HAVE' | 'WANT' });
@@ -19,6 +23,14 @@ export default function Profile({ currentUser, onUpdateUser }: { currentUser: an
       setFormData({ name: res.data.data.name, bio: res.data.data.bio || '' });
       const skillsRes = await getUserSkills(currentUser.id);
       setSkills(skillsRes.data.data);
+
+      // Fetch reputation & reviews for Fitur 10
+      const [repRes, revRes] = await Promise.all([
+        getUserReputation(currentUser.id),
+        getUserReviews(currentUser.id),
+      ]);
+      setReputation(repRes.data.data);
+      setReviews(revRes.data.data);
     } catch (err) {
       console.error(err);
     }
@@ -151,6 +163,60 @@ export default function Profile({ currentUser, onUpdateUser }: { currentUser: an
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Fitur 10: Sistem Ulasan & Reputasi Partner */}
+      <div className="bg-white shadow rounded-lg mb-8">
+        <div className="px-4 py-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-4 mb-4">
+            <div>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Reputasi & Ulasan Partner</h3>
+              <p className="text-xs text-gray-500 mt-0.5">Penilaian dari pengguna lain yang telah menyelesaikan sesi barter skill dengan Anda.</p>
+            </div>
+            <div className="bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">
+              <ReputationBadge
+                averageRating={reputation.averageRating}
+                totalReviews={reputation.totalReviews}
+                size="lg"
+              />
+            </div>
+          </div>
+
+          {reviews.length === 0 ? (
+            <div className="text-center py-6 text-sm text-gray-500 bg-gray-50 rounded-lg">
+              Belum ada ulasan yang diterima. Selesaikan sesi pertukaran keahlian untuk mulai membangun reputasi Anda!
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map((rev) => (
+                <div key={rev.id} className="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-semibold text-sm text-gray-900">{rev.reviewer?.name}</span>
+                    <div className="flex items-center text-amber-500">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-3.5 w-3.5 ${
+                            star <= rev.rating ? 'text-amber-400 fill-amber-400' : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-600 ml-1.5 font-medium">{rev.rating}/5</span>
+                    </div>
+                  </div>
+                  {rev.comment && <p className="text-sm text-gray-700 italic">"{rev.comment}"</p>}
+                  <p className="text-[10px] text-gray-400 mt-2">
+                    {new Date(rev.createdAt).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

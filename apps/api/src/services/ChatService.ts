@@ -1,4 +1,5 @@
 import prisma from '../config/database';
+import { createNotification } from './NotificationService';
 
 export const getMessages = async (swapRequestId: string) => {
   return prisma.chatMessage.findMany({
@@ -19,10 +20,28 @@ export const sendMessage = async (swapRequestId: string, senderId: string, messa
     throw new Error('Anda tidak memiliki akses ke percakapan ini');
   }
 
-  return prisma.chatMessage.create({
+  const createdMessage = await prisma.chatMessage.create({
     data: { swapRequestId, senderId, messageText },
     include: {
       sender: { select: { id: true, name: true, email: true, bio: true, createdAt: true } }
     }
   });
+
+  // Kirim notifikasi ke partner
+  try {
+    const partnerId = swapRequest.senderId === senderId ? swapRequest.receiverId : swapRequest.senderId;
+    const senderName = createdMessage.sender?.name || 'Partner';
+    const previewText = messageText.length > 50 ? `${messageText.slice(0, 50)}...` : messageText;
+    await createNotification({
+      userId: partnerId,
+      type: 'NEW_CHAT_MESSAGE',
+      title: `Pesan baru dari ${senderName}`,
+      message: previewText,
+      link: '/swap-requests',
+    });
+  } catch (err) {
+    // Fail-safe
+  }
+
+  return createdMessage;
 };

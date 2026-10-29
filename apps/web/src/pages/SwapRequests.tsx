@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getSwapRequests, updateSwapRequest, getMessages, sendMessage } from '../services/api';
+import { getSwapRequests, updateSwapRequest, getMessages, sendMessage, getSwapReviews } from '../services/api';
 import StatusBadge from '../components/StatusBadge';
 import SkillBadge from '../components/SkillBadge';
 import EmptyState from '../components/EmptyState';
-import { Send } from 'lucide-react';
+import ReviewModal from '../components/ReviewModal';
+import { Send, Star, CheckCircle2 } from 'lucide-react';
 
 export default function SwapRequests({ currentUser }: { currentUser: any }) {
   const [requests, setRequests] = useState<any[]>([]);
@@ -12,11 +13,32 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [reviewModalSwap, setReviewModalSwap] = useState<any>(null);
+  const [reviewedSwapIds, setReviewedSwapIds] = useState<Record<string, any>>({});
 
   const fetchRequests = async () => {
     try {
       const res = await getSwapRequests(currentUser.id);
-      setRequests(res.data.data);
+      const reqList = res.data.data;
+      setRequests(reqList);
+
+      // Fetch reviews for completed swaps
+      const completed = reqList.filter((r: any) => r.status === 'COMPLETED');
+      const reviewsMap: Record<string, any> = {};
+      await Promise.all(
+        completed.map(async (r: any) => {
+          try {
+            const revRes = await getSwapReviews(r.id);
+            const myReview = revRes.data.data?.find((rev: any) => rev.reviewerId === currentUser.id);
+            if (myReview) {
+              reviewsMap[r.id] = myReview;
+            }
+          } catch (err) {
+            // Ignored
+          }
+        })
+      );
+      setReviewedSwapIds(reviewsMap);
     } catch (err) {
       console.error(err);
     } finally {
@@ -129,6 +151,24 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
                         <button onClick={() => handleUpdateStatus(req.id, 'COMPLETED')} className="px-3 py-1.5 bg-gray-600 text-white text-sm font-medium rounded hover:bg-gray-700">Tandai Selesai</button>
                       </>
                     )}
+                    {req.status === 'COMPLETED' && (
+                      <div>
+                        {reviewedSwapIds[req.id] ? (
+                          <div className="inline-flex items-center text-xs text-green-700 bg-green-50 px-2.5 py-1.5 rounded-md border border-green-200">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-green-600" />
+                            <span>Sudah Diulas (Rating {reviewedSwapIds[req.id].rating}/5)</span>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setReviewModalSwap(req)}
+                            className="inline-flex items-center px-3 py-1.5 bg-amber-500 text-white text-sm font-medium rounded hover:bg-amber-600 shadow-sm"
+                          >
+                            <Star className="h-4 w-4 mr-1 fill-white" />
+                            Beri Ulasan & Rating
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -177,6 +217,16 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
             </form>
           </div>
         </div>
+      )}
+
+      {reviewModalSwap && (
+        <ReviewModal
+          isOpen={!!reviewModalSwap}
+          swapRequest={reviewModalSwap}
+          currentUser={currentUser}
+          onClose={() => setReviewModalSwap(null)}
+          onSuccess={() => fetchRequests()}
+        />
       )}
     </div>
   );

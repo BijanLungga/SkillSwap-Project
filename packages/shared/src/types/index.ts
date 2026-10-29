@@ -35,3 +35,43 @@ export interface ChatMessage {
   createdAt: Date | string;
 }
 
+export type NotificationType =
+  | 'SWAP_REQUEST_RECEIVED'
+  | 'SWAP_REQUEST_ACCEPTED'
+  | 'SWAP_REQUEST_REJECTED'
+  | 'SWAP_REQUEST_COMPLETED'
+  | 'NEW_CHAT_MESSAGE'
+  | 'REVIEW_RECEIVED';
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: NotificationType | string;
+  title: string;
+  message: string;
+  link?: string | null;
+  isRead: boolean;
+  createdAt: Date | string;
+}
+
+export interface Review {
+  id: string;
+  swapRequestId: string;
+  reviewerId: string;
+  targetUserId: string;
+  rating: number;
+  comment?: string | null;
+  createdAt: Date | string;
+  reviewer?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export interface UserReputation {
+  averageRating: number;
+  totalReviews: number;
+}
+
+
