@@ -4,7 +4,7 @@
 
 ## Tech Stack
 
-- **Backend:** Node.js, Express, TypeScript, Prisma ORM, MySQL (XAMPP)
+- **Backend:** Node.js, Express, TypeScript, Prisma ORM, MySQL (Laragon / XAMPP)
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Lucide React Icons
 - **Testing:** Jest, ts-jest (Preset Node/TypeScript)
 - **Arsitektur:** Decoupled Monorepo (npm workspaces: `apps/api`, `apps/web`, `packages/shared`), RESTful API
@@ -66,7 +66,7 @@ npx prisma db push
 cd ../..
 ```
 
-Perintah ini akan secara otomatis membuat basis data `skillswap_db`, menyinkronkan seluruh tabel relasional (`User`, `UserSkill`, `SwapRequest`, `ChatMessage`), serta meng-generate Prisma Client.
+Perintah ini akan secara otomatis membuat basis data `skillswap_db`, menyinkronkan seluruh tabel relasional (`User`, `UserSkill`, `SwapRequest`, `ChatMessage`, `Notification`, `Review`), serta meng-generate Prisma Client.
 
 ### 5. Jalankan Aplikasi (Buka 2 Terminal Terpisah)
 
@@ -281,8 +281,7 @@ Status fitur ditandai secara transparan: **[Ada]** = telah selesai diimplementas
 6. **[Ada] Ruang Obrolan Terintegrasi (Chat Room)** — Pengiriman pesan teks koordinasi antar-partner pada pertukaran yang telah disetujui (`ACCEPTED`) dengan polling otomatis berkala.
 7. **[Ada] Dasbor Statistik & Partner Terhubung** — Metrik statistik 4 kuadran dan tabel partner terhubung dengan tautan langsung ke obrolan.
 8. **[Ada] Notifikasi Push Real-time** — Pengiriman pemberitahuan langsung ke browser saat menerima permintaan barter, persetujuan/penolakan, atau pesan baru via WebSockets terintegrasi.
-9. **[Rencana] Panggilan Video Pembelajaran** — Ruang tatap muka virtual bawaan di dalam aplikasi.
-10. **[Ada] Sistem Ulasan & Reputasi Partner** — Pemberian rating bintang (1-5) dan testimoni ulasan setelah sesi pertukaran selesai (`COMPLETED`), serta kalkulasi reputasi partner.
+9. **[Ada] Sistem Ulasan & Reputasi Partner** — Pemberian rating bintang (1-5) dan testimoni ulasan setelah sesi pertukaran selesai (`COMPLETED`), serta kalkulasi reputasi partner.
 
 ---
 
