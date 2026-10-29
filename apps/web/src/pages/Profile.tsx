@@ -7,6 +7,8 @@ import { Star } from 'lucide-react';
 
 export default function Profile({ currentUser, onUpdateUser }: { currentUser: any, onUpdateUser: (u:any)=>void }) {
   const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
   const [skills, setSkills] = useState<any[]>([]);
   const [reputation, setReputation] = useState<{ averageRating: number; totalReviews: number }>({ averageRating: 0, totalReviews: 0 });
   const [reviews, setReviews] = useState<any[]>([]);
@@ -18,6 +20,8 @@ export default function Profile({ currentUser, onUpdateUser }: { currentUser: an
 
   const fetchProfile = async () => {
     try {
+      setLoading(true);
+      setError('');
       const res = await getUser(currentUser.id);
       setProfile(res.data.data);
       setFormData({ name: res.data.data.name, bio: res.data.data.bio || '' });
@@ -31,8 +35,11 @@ export default function Profile({ currentUser, onUpdateUser }: { currentUser: an
       ]);
       setReputation(repRes.data.data);
       setReviews(revRes.data.data);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setError(err.response?.data?.error || 'Gagal memuat profil pengguna');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +81,29 @@ export default function Profile({ currentUser, onUpdateUser }: { currentUser: an
     }
   };
 
-  if (!profile) return <div className="p-8 text-center">Memuat...</div>;
+  if (loading) {
+    return <div className="p-12 text-center text-gray-500 font-medium">Memuat data profil...</div>;
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="max-w-md mx-auto my-12 bg-white rounded-xl shadow-md p-6 text-center border border-gray-100">
+        <h3 className="text-lg font-bold text-gray-900 mb-2">Gagal Memuat Profil</h3>
+        <p className="text-sm text-gray-600 mb-6">
+          {error || 'Data akun tidak ditemukan di basis data atau sesi login telah kedaluwarsa.'}
+        </p>
+        <button
+          onClick={() => {
+            localStorage.removeItem('skillswap_user');
+            window.location.reload();
+          }}
+          className="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm"
+        >
+          Keluar & Login Ulang
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">

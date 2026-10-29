@@ -22,8 +22,34 @@ export default function Dashboard({ currentUser }: { currentUser: any }) {
     fetchDashboard();
   }, [currentUser.id]);
 
-  if (loading) return <div className="p-8 text-center">Memuat...</div>;
-  if (!data) return <div className="p-8 text-center text-red-500">Gagal memuat data dashboard.</div>;
+  if (loading) return <div className="p-12 text-center text-gray-500 font-medium">Memuat data dashboard...</div>;
+  if (!data) {
+    return (
+      <div className="max-w-md mx-auto my-12 bg-white rounded-xl shadow-md p-6 text-center border border-gray-100">
+        <h3 className="text-lg font-bold text-gray-900 mb-2">Gagal Memuat Dashboard</h3>
+        <p className="text-sm text-gray-600 mb-6">
+          Koneksi ke backend terputus atau sesi login akun tidak ditemukan di database. Pastikan server backend dan MySQL di Laragon sudah berjalan.
+        </p>
+        <div className="flex justify-center gap-3">
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200"
+          >
+            Muat Ulang
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem('skillswap_user');
+              window.location.reload();
+            }}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 shadow-sm"
+          >
+            Keluar & Login Ulang
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

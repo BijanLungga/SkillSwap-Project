@@ -9,3 +9,4 @@ router.get('/users/:userId/reputation', ReviewController.getUserReputation);
 router.get('/swap-requests/:swapRequestId/reviews', ReviewController.getSwapReviews);
 
 export default router;
+

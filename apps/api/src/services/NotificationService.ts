@@ -83,3 +83,4 @@ export const markAllAsRead = async (userId: string) => {
 
   return { success: true };
 };
+
