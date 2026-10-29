@@ -9,6 +9,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts",
+    "users": "ts-node src/scripts/list-users.ts",
     "test": "jest --verbose"
   },
   "dependencies": {

@@ -101,6 +101,22 @@ http://localhost:5173
 
 ---
 
+## Cara Melihat Akun & Password yang Pernah Dibuat
+
+Untuk melihat seluruh akun yang sudah terdaftar di database secara instan, jalankan perintah ini dari terminal:
+
+```bash
+npm run users
+```
+
+Perintah di atas akan menampilkan tabel seluruh akun di terminal:
+- **Nama**
+- **Email**
+- **Password**
+- **Waktu Terdaftar**
+
+---
+
 ## Menjalankan Unit Test
 
 Dari root project:
@@ -108,13 +124,7 @@ Dari root project:
 npm test
 ```
 
-Atau dari folder `apps/api`:
-```bash
-cd apps/api
-npx jest --verbose
-```
-
-Hasil: **5 Test Suites Passed, 33 Tests Passed (ALL PASSED)**.
+Hasil: **7 Test Suites Passed, 52 Tests Passed (ALL PASSED)**.
 
 ---
 
