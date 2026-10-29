@@ -4,6 +4,7 @@ import StatusBadge from '../components/StatusBadge';
 import SkillBadge from '../components/SkillBadge';
 import EmptyState from '../components/EmptyState';
 import ReviewModal from '../components/ReviewModal';
+import PartnerReviewsModal from '../components/PartnerReviewsModal';
 import { Send, Star, CheckCircle2 } from 'lucide-react';
 
 export default function SwapRequests({ currentUser }: { currentUser: any }) {
@@ -14,6 +15,7 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [reviewModalSwap, setReviewModalSwap] = useState<any>(null);
+  const [selectedPartnerForReviews, setSelectedPartnerForReviews] = useState<any>(null);
   const [reviewedSwapIds, setReviewedSwapIds] = useState<Record<string, any>>({});
 
   const fetchRequests = async () => {
@@ -131,6 +133,13 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
                     <div>
                       <h3 className="text-lg font-medium text-gray-900">{partner.name}</h3>
                       <p className="text-xs text-gray-500">{isOutgoing ? 'Anda mengirim ke ' : 'Menerima dari '}{partner.email}</p>
+                      <button
+                        onClick={() => setSelectedPartnerForReviews(partner)}
+                        className="text-xs text-amber-600 hover:text-amber-700 inline-flex items-center gap-1 font-medium mt-1 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 hover:bg-amber-100 transition-colors"
+                      >
+                        <Star className="h-3 w-3 fill-amber-400 text-amber-500" />
+                        Lihat Ulasan Partner
+                      </button>
                     </div>
                     <StatusBadge status={req.status} />
                   </div>
@@ -226,6 +235,15 @@ export default function SwapRequests({ currentUser }: { currentUser: any }) {
           currentUser={currentUser}
           onClose={() => setReviewModalSwap(null)}
           onSuccess={() => fetchRequests()}
+        />
+      )}
+
+      {selectedPartnerForReviews && (
+        <PartnerReviewsModal
+          isOpen={!!selectedPartnerForReviews}
+          userId={selectedPartnerForReviews.id}
+          userName={selectedPartnerForReviews.name}
+          onClose={() => setSelectedPartnerForReviews(null)}
         />
       )}
     </div>

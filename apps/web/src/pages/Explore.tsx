@@ -4,6 +4,7 @@ import SkillBadge from '../components/SkillBadge';
 import EmptyState from '../components/EmptyState';
 import ConfirmDialog from '../components/ConfirmDialog';
 import ReputationBadge from '../components/ReputationBadge';
+import PartnerReviewsModal from '../components/PartnerReviewsModal';
 import { Search } from 'lucide-react';
 
 export default function Explore({ currentUser }: { currentUser: any }) {
@@ -14,6 +15,7 @@ export default function Explore({ currentUser }: { currentUser: any }) {
   const [loading, setLoading] = useState(false);
 
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [selectedPartnerForReviews, setSelectedPartnerForReviews] = useState<any>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -127,6 +129,7 @@ export default function Explore({ currentUser }: { currentUser: any }) {
                       averageRating={reputations[user.id].averageRating}
                       totalReviews={reputations[user.id].totalReviews}
                       size="sm"
+                      onClick={() => setSelectedPartnerForReviews(user)}
                     />
                   )}
                 </div>
@@ -191,6 +194,15 @@ export default function Explore({ currentUser }: { currentUser: any }) {
             </div>
           </div>
         </div>
+      )}
+
+      {selectedPartnerForReviews && (
+        <PartnerReviewsModal
+          isOpen={!!selectedPartnerForReviews}
+          userId={selectedPartnerForReviews.id}
+          userName={selectedPartnerForReviews.name}
+          onClose={() => setSelectedPartnerForReviews(null)}
+        />
       )}
     </div>
   );

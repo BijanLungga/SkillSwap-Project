@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getDashboard } from '../services/api';
 import SkillBadge from '../components/SkillBadge';
 import EmptyState from '../components/EmptyState';
-import { BookOpen, Target, Users, Clock, UsersRound } from 'lucide-react';
+import PartnerReviewsModal from '../components/PartnerReviewsModal';
+import { BookOpen, Target, Users, Clock, UsersRound, Star } from 'lucide-react';
 
 export default function Dashboard({ currentUser }: { currentUser: any }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPartnerForReviews, setSelectedPartnerForReviews] = useState<any>(null);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -106,15 +108,33 @@ export default function Dashboard({ currentUser }: { currentUser: any }) {
                       ))}
                     </div>
                   </div>
-                  <a href="/swap-requests" className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
-                    Buka Chat
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setSelectedPartnerForReviews({ id: partner.userId, name: partner.name })}
+                      className="inline-flex items-center px-3 py-1.5 border border-amber-300 text-xs font-medium rounded shadow-sm text-amber-700 bg-amber-50 hover:bg-amber-100"
+                    >
+                      <Star className="h-3.5 w-3.5 mr-1 text-amber-500 fill-amber-400" />
+                      Lihat Ulasan
+                    </button>
+                    <a href="/swap-requests" className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+                      Buka Chat
+                    </a>
+                  </div>
                 </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      {selectedPartnerForReviews && (
+        <PartnerReviewsModal
+          isOpen={!!selectedPartnerForReviews}
+          userId={selectedPartnerForReviews.id}
+          userName={selectedPartnerForReviews.name}
+          onClose={() => setSelectedPartnerForReviews(null)}
+        />
+      )}
     </div>
   );
 }

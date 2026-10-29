@@ -5,19 +5,29 @@ interface ReputationBadgeProps {
   averageRating: number;
   totalReviews: number;
   size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
 }
 
 export default function ReputationBadge({
   averageRating,
   totalReviews,
   size = 'md',
+  onClick,
 }: ReputationBadgeProps) {
   const iconSize = size === 'sm' ? 'h-3.5 w-3.5' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4';
   const textSize = size === 'sm' ? 'text-xs' : size === 'lg' ? 'text-base font-semibold' : 'text-sm font-medium';
 
+  const clickableStyles = onClick
+    ? 'cursor-pointer hover:bg-amber-50 hover:border-amber-300 p-1 rounded-md transition-all'
+    : '';
+
   if (totalReviews === 0) {
     return (
-      <div className={`inline-flex items-center text-gray-400 ${textSize}`}>
+      <div
+        onClick={onClick}
+        title={onClick ? 'Klik untuk melihat reputasi' : undefined}
+        className={`inline-flex items-center text-gray-400 ${textSize} ${clickableStyles}`}
+      >
         <Star className={`${iconSize} mr-1 text-gray-300`} />
         <span>Belum ada ulasan</span>
       </div>
@@ -25,12 +35,18 @@ export default function ReputationBadge({
   }
 
   return (
-    <div className={`inline-flex items-center ${textSize}`}>
+    <div
+      onClick={onClick}
+      title={onClick ? 'Klik untuk melihat rincian ulasan' : undefined}
+      className={`inline-flex items-center ${textSize} ${clickableStyles}`}
+    >
       <div className="flex items-center text-amber-500 mr-1.5">
         <Star className={`${iconSize} fill-current text-amber-400 mr-1`} />
         <span className="font-bold text-gray-800">{averageRating.toFixed(1)}</span>
       </div>
-      <span className="text-gray-500 font-normal text-xs">({totalReviews} ulasan)</span>
+      <span className="text-gray-500 font-normal text-xs underline decoration-dotted">
+        ({totalReviews} ulasan)
+      </span>
     </div>
   );
 }
