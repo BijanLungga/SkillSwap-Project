@@ -155,6 +155,14 @@ taskkill /PID 12345 /F
 
 ---
 
+## Video Demo Aplikasi
+
+Rekaman demo lengkap alur penggunaan aplikasi SkillSwap dapat ditonton melalui tautan berikut:
+
+**[Tonton Video Demo SkillSwap (Google Drive)](https://drive.google.com/file/d/1vmwnB8a_YXVnCg3_a_puH1Sa_k9iqZSv/view?usp=sharing)**
+
+---
+
 ## Troubleshooting
 
 | Error | Solusi |
