@@ -10,6 +10,8 @@
 
 ## 1. Struktur Branching Git (v1.0, v1.0_dev, v1.1)
 
+![Git Branches](./images/p11_branches.png)
+
 ```text
 PS D:\Semester 3\RPL> git --no-pager branch -a
   main
@@ -27,6 +29,8 @@ PS D:\Semester 3\RPL> git --no-pager branch -a
 ## 2. Bukti Pengujian & Penjelasan Skenario
 
 ### A. Skenario Unit Test FAILED (Simulasi Error)
+
+![Unit Test Failed](./images/p11_test_failed.png)
 
 ```text
 RUNS  src/__tests__/UserService.test.ts
@@ -46,6 +50,8 @@ Time:        4.256 s, estimated 9 s
 
 ### B. Skenario Unit Test ALL PASSED (Hijau)
 
+![Unit Test Passed](./images/p11_test_passed.png)
+
 ```text
 Test Suites: 11 passed, 11 total
 Tests:       252 passed, 252 total
@@ -62,6 +68,8 @@ Ran all test suites.
 ---
 
 ### C. Otomasi CI di GitHub Actions & Status LIVE
+
+![CI Actions Passed](./images/p11_ci_actions.png)
 
 ```text
 ✔ feat(test): add 200 unit tests suite for p11 verification [v1.1]    (24s)
