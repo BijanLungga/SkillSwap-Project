@@ -1,0 +1,33 @@
+name: SkillSwap CI / Automated Testing
+
+on:
+  push:
+    branches: [ "main", "v1.0", "v1.0_dev", "v1.1" ]
+  pull_request:
+    branches: [ "main", "v1.0", "v1.0_dev", "v1.1" ]
+
+jobs:
+  test:
+    name: Run Unit Tests (200 UT)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: |
+          cd apps/api
+          npx prisma generate
+
+      - name: Run Jest Unit Tests
+        run: npm test
